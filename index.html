@@ -1,338 +1,83 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-	<meta charset="utf-8">
-	<title>Curriculo Profissional</title>
-	<!--link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon" /-->
-	<link rel="shortcut icon" href="img/favicon2.png">
-	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
-	<script type="text/javascript" src="js/bootstrap.min.js"></script>
-	<!-- ÍCONES -->
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
-	<style type="text/css">
-		.lat-esq{
-			background: #9ce29c;
-		}
-		.cabeca-dir{
-			background: #4d4949;
-			border-style: outset;
-			margin-bottom: 10px;
-		}
-		.foto-usu{
-			width: 145px;
-			margin-top: 30px;
-		}
-		h1{
-			color: #9ce29c;
-		}
-		h2{
-			color: white;
-		}
-		.container{
-			margin-top: 15px;
-		}
-		h4{
-			margin-top: 15px;
-		}
-		a{
-			color: #000;
-		}
-		canvas{
-			position: absolute;
-		}
-		img{
-			padding: 5px;
-		}
-		.rotuloSkills{
-			position: absolute;
-			font-weight: bold;
-		}
-		.sombra{
-			box-shadow: 5px 6px #888888;
-		}
-	</style>
+  <meta charset="UTF-8">  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>sergio-abdala.github.io</title>
+  
+  <link rel="stylesheet" href="./public/bootstrap/bootstrap.css">
+  <script src="./public/javascripts/popper.min.js"></script>
+  <script src="./public/javascripts/bootstrap.min.js"></script>
+  <script src="https://use.fontawesome.com/0ab46577ba.js"></script>
+  <style>
+      body{
+          background-color: #151515;
+      }
+      
+      h1, h2, h3, hr, footer{
+          color: #9ce29c;
+          font-family: 'Lucida Console';
+      }      
+      p{
+          color: #fffafa;
+          font-family: monospace;
+      }
+      footer{
+          text-align: center;
+      }
+  </style>
 </head>
 <body>
-	<div class="container">
-		<div class="row">
-			<div class="col-12 col-md-3 lat-esq sombra">
-				<div class="text-center">
-					<img src="img/Beto.jpg" class="img-responsive foto-usu rounded-circle">
-				</div>
-				<div>
-					<h4>SOBRE MIM...</h4><hr>
-					<P><ul>
-						<li>Brasileiro</li>
-						<li>Solteiro</li>
-						<li>Pai do Pedro Ivo</li>
-						<li>Programador Web </li>
-						<li>Desenvolvedor Full Stack</li>
-						<li>
-							Tecnologias as quais trabalho
-							<ul>
-								<li>HTML</li>
-								<li>CSS</li>
-								<li>
-									Javascript
-									<ul>
-                                        <li>jQuery / Ajax</li>
-                                        <li>nodeJs / Express</li>
-									</ul>
-								</li>
-								<li>
-                                    PHP
-                                    <ul>
-                                        <li>CodeIgniter</li>
-                                    </ul>
-                                </li>
-								<li>SQL</li>
-								
-							</ul>
-						</li>
-						<li>
-							Mobile First <small>/ Layout Responsivo</small>
-							<ul>
-								<li>BootStrap</li>
-							</ul>
-						</li>
-					</ul></P><br />
-					<h5>Perfil</h5><hr />
-					<p class="text-justify"> &nbsp;&nbsp;Apaixonado por tecnologia e programador por vocação atualmente estudando sistemas para internet no Instituto Federal de Educação, Ciência e Tecnologia Sul-rio-grandense campus Charqueadas. <br /><small style="float: right;">Cursando 4º periodo</small></p>
-					<p>.</p>
-					<h4>CONTATO</h4><hr>
-					<p style="cursor: pointer;" id="clickopia"><i class="fa fa-envelope"> sergioabdala@gmail.com</i><input type="text"  id="copyemail" value="abdala.sergio@gmail.com" style="display: none;"></p>
-					<p><i class="fa fa-phone"> (51) 9 9960 3001</i></p>
-					<p><i class="fa fa-whatsapp"> (51) 9 9959 0045</i></p>
-					<p><a href="https://www.facebook.com/sgio.medeiros/" target="blank"><i class="fa fa-facebook-square"> FaceBook</i></a></p>
-					<!--p><a href="#"><i class="fa fa-twitter"> twitter</i></a></p-->
-					<p><a href="https://github.com/Sergio-Abdala" target="blank"><i class="	fa fa-github"> github</i></a></p>
-				</div>
-			</div>
-			<div class="col-12 col-md-9">
-				<div class="cabeca-dir text-center">
-					<h1>Sérgio Roberto Ab'dala Medeiros</h1>
-					<h2>Programador Web <small> Desenvolvedor Full Stack...</small></h2>		
-
-				</div>
-				<div class="row">
-					<div class="col-6 col-md-3" >
-						<canvas id="myChart"></canvas>
-						<span class="rotuloSkills">HTML</span>
-						<img src="img/html.gif" class="figure-img img-fluid rounded-circle" style="margin-top: 27px;">						
-					</div>
-					<div class="col-6 col-md-3">
-						<canvas id="myChart1"></canvas>
-						<span class="rotuloSkills">CSS</span>
-						<img src="img/css.png" class="figure-img img-fluid rounded-circle">
-					</div>
-					<div class="col-6 col-md-3">						
-						<canvas id="myChart2"></canvas>
-						<span class="rotuloSkills">JavaScript</span>
-						<img src="img/javascript.png" class="figure-img img-fluid rounded-circle">
-					</div>
-					<div class="col-6 col-md-3">
-						<canvas id="myChart3"></canvas>
-						<span class="rotuloSkills">PHP</span>
-						<img src="img/php.gif" class="figure-img img-fluid rounded-circle" style="margin-top: 25%; margin-left: 10%;">
-					</div>
-				</div>
-				<div class="row" style="padding-left: 20px;">
-					<div class="col-12">
-						<div class="card">
-						  <div class="card-header">
-						    Formação Acadêmica
-						  </div>
-						  <div class="card-body">
-						    <h5 class="card-title">Escola Cenecista Carolino Euzebio Nunes - <small> Charqueadas-RS</small></h5>
-						    <p class="card-text">Técnico em Metalurgia. <small>1995-2001</small></p>
-						    <h5 class="card-title" id="ifsul">Instituto Federal de Educação, Ciência e Tecnologia Sul-rio-grandense <small>Charqueadas-RS</small></h5>
-						    <p class="card-text">Tecnólogo em Sistemas para Internet. <small>Periodo: 2019 - ... &nbsp;&nbsp;&nbsp;<a href="#ifsul" onclick="document.getElementById('ifsulcom').style = 'display: block;'; document.getElementById('mais').style = 'display: none;'; document.getElementById('menos').style = 'display: block;';" id="mais">para mais informações click aqui...</a> <a href="#" onclick="document.getElementById('ifsulcom').style = 'display: none;'; document.getElementById('menos').style = 'display: none;'; document.getElementById('mais').style = 'display: block;';" id="menos" style="display: none;">menos informações</a></small>
-						    	<small><i style="display: none;" id="ifsulcom">formação tecnológica que possibilita buscar soluções inovadoras e adequadas à realidade do mercado, utilizando a tecnologia de desenvolvimento de sistemas para Web com criatividade e eficiência.<br />
-						    	fazer uso dos paradigmas, metodologias e técnicas de programação atuais e emergentes para Internet.<br />
-						    	ocupa-se do desenvolvimento de programas, de interfaces e aplicativos, do comércio e do marketing eletrônicos, além de páginas e portais para internet e intranet.<br /><a href="http://intranet.ifsul.edu.br/catalogo/curso/35" target="blank" style="float: right;">Catálogo de cursos...</a></i></small></p>					    
-						    <!--a href="#" class="btn btn-primary">Go somewhere</a-->
-						  </div>
-						</div>
-					</div>
-				</div>
-				<div class="row">
-					<div style="padding: 20px;">
-                        <h5 style="padding: 20px; ">Portfólio</h5>
-                        <h6>em breve...</h6>
-						<!--div class="row">							
-							<div class="col-12 col-md-6">
-								<a href="http://charqueadastem.com.br/" target="blank" > <img class="img-fluid img-thumbnail" src="img/site2.jpg" alt="Site imagem"> </a> <br />...
-							</div>
-							<div class="col-12 col-md-6">
-								<a href="http://maccred.com/" target="blank"> <img class="img-fluid img-thumbnail" src="img/site3.jpg" alt="Site imagem"> </a><br />...
-							</div>
-							<div class="col-12 col-md-6">
-								<a href="http://kppcontabilidade.profissional.ws/" target="blank"> <img class="img-fluid img-thumbnail" src="img/site4.jpg" alt="Site imagem"> </a><br />...
-							</div>							
-							<div class="col-12 col-md-6">								
-								<a href="#" target="blank"> <img class="img-fluid img-thumbnail" src="img/site7.jpg" alt="Site imagem"> </a><br />...
-							</div>
-							<!-- MENORES >
-							<div class="col-12 col-md-3">
-								<a href="#" target="blank"> <img class="img-fluid img-thumbnail" src="img/site6.jpg" alt="Site imagem"> </a><br />...
-							</div>
-							<div class="col-12 col-md-3">
-								<a href="#" target="blank"> <img class="img-fluid img-thumbnail" src="img/site1.jpg" target="blank" alt="Site imagem">	 </a><br />...
-							</div>
-							<div class="col-12 col-md-3">
-								<a href="#" target="blank"> <img class="img-fluid img-thumbnail" src="img/site5.jpg" alt="Site imagem"> </a><br />...
-							</div>
-							<div class="col-12 col-md-3">
-								<a href="#" target="blank"> <img class="img-fluid img-thumbnail" src="img/template00.png" alt="Site imagem"> </a><br />...
-							</div>
-						</div-->
-					</div>						
-				</div>					
-			</div>			
-		</div>
-		<div class="row">
-			 <footer class="blockquote-footer" style="margin: 0 auto; width: 50%;">Copyright &copy; 2020 <cite title="Source Title"> by Sérgio Ab'dala...</cite></footer>
-		</div>
-	</div>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-	<script type="text/javascript">
-		/*var data = {
-		    datasets: [{
-		        data: [10, 20, 30]
-		    }],
-
-		    // These labels appear in the legend and in the tooltips when hovering different arcs
-		    labels: [
-		        'Red',
-		        'Yellow',
-		        'Blue'
-		    ]
-		};*/
-		var ctx = document.getElementById('myChart').getContext('2d');
-		var ctx1 = document.getElementById('myChart1').getContext('2d');
-		var ctx2 = document.getElementById('myChart2').getContext('2d');
-		var ctx3 = document.getElementById('myChart3').getContext('2d');
-
-		var myDoughnutChart = new Chart(ctx,{
-		    type: 'doughnut',
-		    data: {
-				    datasets: [{
-				    	label: 'Points',
-				        data: [5],
-				        /*borderColor: 'rgba(77,166,253,0.85)',//*/
-				        backgroundColor: ['#9ce29c'],     
-				    }],
-
-				    // These labels appear in the legend and in the tooltips when hovering different arcs
-				    labels: [
-				        'HTML'
-				    ],
-				},
-		    options: {
-		    	cutoutPercentage: 75,
-		    	animation: {
-		    		animateScale: true
-		    	},
-		    	legend: {
-		            display: false,
-		            labels: {
-		                fontColor: '#000'
-		            }
-		        }
-		    }
-		});
-
-		var myDoughnutChart1 = new Chart(ctx1,{
-		    type: 'doughnut',
-		    data: {
-				    datasets: [{
-				        data: [3],
-				        backgroundColor:['#00f']			        
-				    }],
-
-				    // These labels appear in the legend and in the tooltips when hovering different arcs
-				    labels: [
-				        'CSS'
-				    ],
-				},
-		    options: {
-		    	cutoutPercentage: 75,
-		    	animation: {
-		    		animateScale: true
-		    	},
-		    	legend: {
-		            display: false,
-		            labels: {
-		                fontColor: '#000'
-		            }
-		        }
-		    }
-		}); 
-
-		var myDoughnutChart2 = new Chart(ctx2,{
-		    type: 'doughnut',
-		    data: {
-				    datasets: [{
-				        data: [100],
-				        backgroundColor:['#F0da5e']			        
-				    }],
-
-				    // These labels appear in the legend and in the tooltips when hovering different arcs
-				    labels: [
-				        'JavaScript'
-				    ],
-				},
-		    options: {
-		    	cutoutPercentage: 75,
-		    	animation: {
-		    		animateScale: true
-		    	},
-		    	legend: {
-		            display: false,
-		            labels: {
-		                fontColor: '#000'
-		            }
-		        }
-		    }
-		});
-
-		var myDoughnutChart3 = new Chart(ctx3,{
-		    type: 'doughnut',
-		    data: {
-				    datasets: [{
-				        data: [7.1],
-				        backgroundColor:['#ebebeb']			        
-				    }],
-
-				    // These labels appear in the legend and in the tooltips when hovering different arcs
-				    labels: [
-				        'PHP'
-				    ],
-				},
-		    options: {
-		    	cutoutPercentage: 75,
-		    	animation: {
-		    		animateScale: true
-		    	},
-		    	legend: {
-		            display: false,
-		            labels: {
-		                fontColor: '#000'
-		            }
-		        }
-		    }
-		});
-		document.getElementById('clickopia').addEventListener('click', function(){
-			$('#copyemail').select();
-		    try {
-		            var ok = document.execCommand('copy');
-		            if (ok) { alert('Texto copiado para a área de transferência'); }
-		        } catch (e) {
-		        alert(e)
-		    }
-		});
-	</script>
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <h1 class="gelo">sergio-abdala.github.io</h1>
+            </div>            
+        </div>
+        <hr>
+        <div class="row">
+            <div class="col">
+                <h2>Sérgio Abdala</h2>
+                <p>
+                    E-mail: sergioabdala<br/>
+                    telefone: 55 51 999 60 30 01
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <h3>sobre mim</h3>
+                <p>Brasileiro, solteiro, programador web, desenvolvedor Full Stack<br/>
+                    Apaixonado por tecnologia e programador por vocação atualmente estudando sistemas para internet no Instituto Federal de Educação, Ciência e Tecnologia Sul-rio-grandense campus Charqueadas.
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <h3>habilidades</h3>
+                <p>
+                    HTML<br/>
+                    CSS<br/>
+                    JAVASCRIPT: JQuery / Ajax, nodeJs / Express<br/>
+                    PHP: CodeIgniter<br/>
+                    Linguaguem SQL
+                </p>
+            </div>            
+        </div>
+        <div class="row">
+            <div class="col">
+                <h3>Formação Acadêmica</h3>
+                <p>
+                    <strong>Escola Cenecista Carolino Euzebio Nunes</strong> - Charqueadas-RS<br/>
+                    Técnico em Metalurgia. 1995-2001<br/>
+                    <strong>Instituto Federal de Educação, Ciência e Tecnologia Sul-rio-grandense</strong> Charqueadas-RS<br/>
+                    Tecnólogo em Sistemas para Internet. Periodo: 2019 - ...    <a href="http://intranet.ifsul.edu.br/catalogo/curso/35" target="_blank" rel="noopener noreferrer">para mais informações click aqui...</a>
+                </p>
+            </div>
+        </div>
+    </div>
+    <footer>
+        <i class="fa fa-copyright" aria-hidden="true"></i>copyright Sérgio Ab'dala
+    </footer>
 </body>
 </html>
