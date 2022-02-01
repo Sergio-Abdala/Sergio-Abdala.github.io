@@ -8,13 +8,12 @@
     <meta name="author" content="Sérgio Ab'dala, and Bootstrap contributors">
     <title>projeto</title>
     <link rel="shortcut icon" href="./public/images/favicon.jpg" type="image/x-icon">
+    <script src="https://use.fontawesome.com/0ab46577ba.js"></script>
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" href="./public/bootstrap/bootstrap.css">
     <script src="./public/javascripts/popper.min.js"></script>
     <script src="./public/javascripts/bootstrap.min.js"></script>
-
     <meta name="theme-color" content="#7952b3">
-
     <style>
       .bd-placeholder-img {
           font-size: 1.125rem;
@@ -53,6 +52,15 @@
         min-width: 100%;
         height: 32rem;
       }
+      /*--------------------------------*/
+      footer{
+          text-align: center;
+          margin-top: 10px;
+          margin-bottom: 25px;
+      }
+      .sobe{
+        margin-top: -75px;
+      }
     </style>
 
 </head>
@@ -75,10 +83,9 @@
               
               <div class="container">
                 <div class="carousel-caption text-left">
-                  <h1>este aqui.</h1>
-                  <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget
-                    metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
-                  <p><a class="btn btn-lg btn-primary" href="#" role="button">Sign up today</a></p>
+                  <h1>Carrossel Simples.</h1>
+                  <p>Mussum Ipsum, cacilds vidis litro abertis. Admodum accumsan disputationi eu sit. Vide electram sadipscing et per. Per aumento de cachacis, eu reclamis. Paisis, filhis, espiritis santis. Cevadis im ampola pa arma uma pindureta.</p>
+                  <p><a class="btn btn-lg btn-primary" href="#" role="button">botão</a></p>
                 </div>
               </div>
             </div>
@@ -87,10 +94,9 @@
               
               <div class="container">
                 <div class="carousel-caption">
-                  <h1>Another example headline.</h1>
-                  <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget
-                    metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
-                  <p><a class="btn btn-lg btn-primary" href="#" role="button">Learn more</a></p>
+                  <h1>imagem dois.</h1>
+                  <p>Mussum Ipsum, cacilds vidis litro abertis. Admodum accumsan disputationi eu sit. Vide electram sadipscing et per. Per aumento de cachacis, eu reclamis. Paisis, filhis, espiritis santis. Cevadis im ampola pa arma uma pindureta.</p>
+                  <p><a class="btn btn-lg btn-primary" href="#" role="button">clique 2</a></p>
                 </div>
               </div>
             </div>
@@ -99,10 +105,9 @@
               
               <div class="container">
                 <div class="carousel-caption text-right">
-                  <h1>One more for good measure.</h1>
-                  <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget
-                    metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
-                  <p><a class="btn btn-lg btn-primary" href="#" role="button">Browse gallery</a></p>
+                  <h1>Mussum Ipsum, cacilds vidis litro abertis. Mauris nec dolor in eros commodo tempor.</h1>
+                  <p>Mussum Ipsum, cacilds vidis litro abertis. Admodum accumsan disputationi eu sit. Vide electram sadipscing et per. Per aumento de cachacis, eu reclamis. Paisis, filhis, espiritis santis. Cevadis im ampola pa arma uma pindureta.</p>
+                  <p><a class="btn btn-lg btn-primary" href="#" role="button">Cacildis</a></p>
                 </div>
               </div>
             </div>
@@ -148,38 +153,41 @@
                         <input id="inputStarWars" type="number" class="form-control" placeholder="Max 83" aria-label="Username" aria-describedby="basic-addon1">
                       </div>
                       <button id="btnStarWars" class="btn btn-primary">EXE</button>
+                      &nbsp;&nbsp;&nbsp;fonte SW api
                     </figcaption>
                 </figure>
             </div>
         </div>
         <div class="col-sm-6 col-lg-4 mb-4">
             <div class="card"><!-- rounded-circle -->
-                <svg class="bd-placeholder-img card-img-top" width="100%" height="200"
-                    xmlns="http://www.w3.org/2000/svg" aria-label="Placeholder: Image cap"
-                    preserveAspectRatio="xMidYMid slice" role="img" focusable="false">
-                    <title>Placeholder</title>
-                    <rect width="100%" height="100%" fill="#868e96" /><text x="50%" y="50%" fill="#dee2e6"
-                        dy=".3em">Image cap??</text>
-                </svg>
-
+                <img id="fotoPoke" class="bd-placeholder-img card-img-top" width="100%" height="200"
+                    src="http://www.w3.org/2000/svg" aria-label="Placeholder: Image cap"
+                    preserveAspectRatio="xMidYMid slice" role="img" focusable="false"/>
+                    
                 <div class="card-body">
-                    <h5 class="card-title">Card title</h5>
-                    <p class="card-text">This card has supporting text below as a natural lead-in to additional
-                        content.</p>
-                    <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                  <h5 class="card-title" id="nomePoke">Card title</h5>
+                  <!--p class="card-text">Mussum Ipsum, cacilds vidis litro abertis. Mauris nec dolor in eros commodo tempor.</p-->
+                  <div class="input-group mb-3">
+                    <input id="numPoke" type="text" class="form-control" placeholder="insert number" aria-label="Recipient's number" aria-describedby="basic-addon2">
+                    <span class="input-group-text" id="basic-addon2" ><button id="btnPoke" class="btn btn-warning">EXE</button></span>
+                  </div>
+                  
+                  <p class="card-text"><small class="text-muted">fonte pokeapi</small></p>
                 </div>
             </div>
         </div>
         <div class="col-sm-6 col-lg-4 mb-4">
-            <div class="card bg-primary text-white text-center p-3">
-                <figure class="mb-0">
-                    <blockquote class="blockquote">
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat.</p>
-                    </blockquote>
-                    <figcaption class="blockquote-footer mb-0 text-white">
-                        Someone famous in <cite title="Source Title">Source Title</cite>
-                    </figcaption>
-                </figure>
+            <div class="card bg-info text-white text-center p-3">
+              <img id="ftClima" src="..." class="rounded-circle col-2 col-sm-3 col-lg-2 mb-2" alt="...">              
+              <p id="cabeClima" class="sobe">cabeçalho</p>                              
+              <figure class="mb-0">        
+                  <blockquote class="blockquote">
+                      <p id="txtClima">isso aqui  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat.</p>
+                  </blockquote>
+                  <figcaption id="rodapeClima" class="blockquote-footer mb-0 text-white">
+                      Someone famous in <cite title="Source Title">Source Title</cite>
+                  </figcaption>
+              </figure>
             </div>
         </div>
         <div class="col-sm-6 col-lg-4 mb-4">
@@ -227,10 +235,15 @@
         </div>
     </div>
 
+    <footer>
+      <i class="fa fa-copyright" aria-hidden="true"> Sérgio Abdala </i> <i class="fa fa-calendar" aria-hidden="true"> fevereiro 2022 </i>
+    </footer>
+
   </div>
 
   <script>
     /*api da nasa*/
+    const limit = 3;
     const key = 'e5sPV0KdKf8jmT7kgfBY9OyCCAWM6xdJaZIJc56e';
     const urlNasa = `https://api.nasa.gov/planetary/apod?api_key=${key}`;
     var cont = 0;
@@ -241,6 +254,7 @@
         cont++;
         console.log('Nasa data:');
         console.log(data);
+        /*-----------------------*/
         if (data.code == 500) {
           document.getElementById('tituloNasa').innerHTML = data.msg;
           document.getElementById('textoNasa').innerHTML = 'falha na tentativa: '+cont+'...';
@@ -297,6 +311,41 @@
         //alert(document.getElementById('numero').value);
         personagem(document.getElementById('inputStarWars').value);
     });
+    //pokemon
+    function pokemon(num) {
+            fetch('https://pokeapi.co/api/v2/pokemon/'+num)
+            .then(result => result.json())
+            .then(pokemon => {
+                console.log(pokemon);
+                console.log(pokemon.name);
+                document.getElementById('nomePoke').innerHTML = pokemon.name;
+                document.getElementById('fotoPoke').src = pokemon.sprites.other.dream_world.front_default;//pokemon.sprites.other.home.front_default;
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    }
+    pokemon(25);/*min 1 ~ max 898*/
+    document.getElementById('btnPoke').addEventListener('click',()=>{
+        pokemon(document.getElementById('numPoke').value);
+    });
+    //clima tempo http://api.weatherstack.com/current?access_key=71aa04217b0ebecc9a233bb3302367b1&query=
+    const climaKey = '71aa04217b0ebecc9a233bb3302367b1';
+    const climaUrl = 'http://api.weatherstack.com/current?access_key='+climaKey+'&query=';
+    var contemp = 0;
+    function clima(cidade){
+      fetch(climaUrl + cidade)      
+      .then(result => result.json())
+      .then(dados => {
+        //imprime na tela
+        document.getElementById('ftClima').src = dados.current.weather_icons[0];
+        document.getElementById('txtClima').innerHTML = dados.location.name +' '+ dados.current.temperature +'ºC';
+        document.getElementById('rodapeClima').innerHTML = dados.location.region;
+        document.getElementById('cabeClima').innerHTML = dados.current.weather_descriptions[0];
+        console.log(dados.location.name +' <==> '+dados.location.region);
+      })
+    }
+    clima('charqueadas');
   </script>
   <script async src="./public/javascripts/mansory.min.js"></script>
 </body>
