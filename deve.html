@@ -141,24 +141,23 @@
                 </div>
             </div>
         </div>
-        <div class="col-sm-6 col-lg-4 mb-4">
+        <div class="col-sm-6 col-lg-4 mb-4"><!--starWars-->
             <div class="card p-3">
                 <figure class="p-3 mb-0">
                     <blockquote class="blockquote">
-                        <p id="paragrafoStarWars">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>
+                        <p id="paragrafoStarWars">nome<br/>sexo<br/>peso.</p>
                     </blockquote>
-                    <figcaption class="blockquote-footer mb-0 text-muted">
+                    <figcaption class="blockquote-footer mb-0 text-muted">                      
                       <div class="input-group mb-3">
-                        <!--span class="input-group-text" id="basic-addon1">@</span-->
-                        <input id="inputStarWars" type="number" class="form-control" placeholder="Max 83" aria-label="Username" aria-describedby="basic-addon1">
+                        <input id="inputStarWars" type="text" class="form-control" placeholder="insert number" aria-label="Recipient's number" aria-describedby="basic-addon2">
+                        <span class="input-group-text" id="basic-addon2" ><button id="btnStarWars" class="btn btn-light">EXE</button></span>
                       </div>
-                      <button id="btnStarWars" class="btn btn-primary">EXE</button>
-                      &nbsp;&nbsp;&nbsp;fonte SW api
+                      &nbsp;&nbsp;&nbsp;fonte SW api...
                     </figcaption>
                 </figure>
             </div>
         </div>
-        <div class="col-sm-6 col-lg-4 mb-4">
+        <div class="col-sm-6 col-lg-4 mb-4"><!-- pokemon -->
             <div class="card"><!-- rounded-circle -->
                 <img id="fotoPoke" class="bd-placeholder-img card-img-top" width="100%" height="200"
                     src="http://www.w3.org/2000/svg" aria-label="Placeholder: Image cap"
@@ -176,16 +175,16 @@
                 </div>
             </div>
         </div>
-        <div class="col-sm-6 col-lg-4 mb-4">
+        <div class="col-sm-6 col-lg-4 mb-4"><!-- clima em produção -->
             <div class="card bg-info text-white text-center p-3">
-              <img id="ftClima" src="..." class="rounded-circle col-2 col-sm-3 col-lg-2 mb-2" alt="...">              
-              <p id="cabeClima" class="sobe">cabeçalho</p>                              
+              <!--img id="ftClima" src="..." class="rounded-circle col-2 col-sm-3 col-lg-2 mb-2" alt="..."-->              
               <figure class="mb-0">        
                   <blockquote class="blockquote">
-                      <p id="txtClima">isso aqui  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat.</p>
+                      <p id="txtClima">Lorem ipsum dolor.</p>
+                      <cite id="cabeClima">cabeçalho</cite>
                   </blockquote>
                   <figcaption id="rodapeClima" class="blockquote-footer mb-0 text-white">
-                      Someone famous in <cite title="Source Title">Source Title</cite>
+                      Someone famous in <!--cite title="Source Title">Source Title</cite-->
                   </figcaption>
               </figure>
             </div>
@@ -280,8 +279,10 @@
 
     /*api starWars*/
     function personagem(num){
-        //document.getElementById('paragrafoStarWars').innerHTML = '';//limpa tela
-            //people/83 => maximo
+      //people/83 => maximo
+      if (num > 83) {
+        document.getElementById('paragrafoStarWars').innerHTML = 'maximo 83';
+      }else{
         fetch(`https://swapi.dev/api/people/`+num)
         .then((response) => response.json())
         .then((data) => {
@@ -302,9 +303,10 @@
             })*/
         })
         .catch((err) => {
-            console.log('erro:');
-            console.log(err);
+          console.log('erro:');
+          console.log(err);
         })
+      }        
     }
     personagem(1);
     document.getElementById('btnStarWars').addEventListener('click',()=>{
@@ -313,39 +315,52 @@
     });
     //pokemon
     function pokemon(num) {
-            fetch('https://pokeapi.co/api/v2/pokemon/'+num)
-            .then(result => result.json())
-            .then(pokemon => {
-                console.log(pokemon);
-                console.log(pokemon.name);
-                document.getElementById('nomePoke').innerHTML = pokemon.name;
-                document.getElementById('fotoPoke').src = pokemon.sprites.other.dream_world.front_default;//pokemon.sprites.other.home.front_default;
-            })
-            .catch((err) => {
-                console.log(err);
-            });
+      if (num > 898) {
+        document.getElementById('nomePoke').innerHTML = 'maximo 898';
+      }else{
+        fetch('https://pokeapi.co/api/v2/pokemon/'+num)
+        .then(result => result.json())
+        .then(pokemon => {
+            console.log(pokemon);
+            console.log(pokemon.name);
+            document.getElementById('nomePoke').innerHTML = pokemon.name;
+            document.getElementById('fotoPoke').src = pokemon.sprites.other.dream_world.front_default;//pokemon.sprites.other.home.front_default;
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+      }          
     }
     pokemon(25);/*min 1 ~ max 898*/
     document.getElementById('btnPoke').addEventListener('click',()=>{
         pokemon(document.getElementById('numPoke').value);
     });
-    //clima tempo http://api.weatherstack.com/current?access_key=71aa04217b0ebecc9a233bb3302367b1&query=
-    const climaKey = '71aa04217b0ebecc9a233bb3302367b1';
-    const climaUrl = 'http://api.weatherstack.com/current?access_key='+climaKey+'&query=';
+    //clima tempo codigo charqueadas https://api.hgbrasil.com/weather?woeid=429395
+    /*servidor github.io ñ aceita chamada fetch de servidor que ñ seja https*/
+    const climaKey = 'b7b939f6baf8477eb21cb1bed9afe3f6';
+    var lat = -29.9568003630446;  //-29.975442767277762, -51.64545094129278 //charqueadas RS
+    var lon = -51.62938699999995;
+    const climaUrl = 'https://api.openweathermap.org/data/2.5/weather?lat='+ lat +'&lon='+lon+'&appid='+ climaKey +'&lang=pt&units=metric';
     var contemp = 0;
     function clima(cidade){
-      fetch(climaUrl + cidade)      
+      fetch(cidade)
       .then(result => result.json())
       .then(dados => {
         //imprime na tela
-        document.getElementById('ftClima').src = dados.current.weather_icons[0];
-        document.getElementById('txtClima').innerHTML = dados.location.name +' '+ dados.current.temperature +'ºC';
-        document.getElementById('rodapeClima').innerHTML = dados.location.region;
-        document.getElementById('cabeClima').innerHTML = dados.current.weather_descriptions[0];
-        console.log(dados.location.name +' <==> '+dados.location.region);
+        //document.getElementById('ftClima').src = dados.current.weather_icons[0];
+        document.getElementById('cabeClima').innerHTML = dados.weather[0].description;
+        document.getElementById('txtClima').innerHTML = dados.name +' '+dados.main.temp +'ºC';
+        document.getElementById('rodapeClima').innerHTML = '<i class="fa fa-thermometer-full" aria-hidden="true"></i> '+ dados.main.temp_max +' &nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-thermometer-empty" aria-hidden="true"></i> '+dados.main.temp_min; 
+        
+        console.log(dados);
+        console.log(dados.name);
+      })
+      .catch(erro => {
+        console.log('erro clima:');
+        console.log(erro);
       })
     }
-    clima('charqueadas');
+    clima(climaUrl);
   </script>
   <script async src="./public/javascripts/mansory.min.js"></script>
 </body>
