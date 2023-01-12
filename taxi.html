@@ -1,0 +1,271 @@
+<!doctype html>
+<html lang="pt-br">
+
+<head>
+  <title>taxi...</title>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS v5.2.1 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+
+</head>
+
+<body>
+  <header>
+    <!-- place navbar here -->
+  </header>
+  <main>
+    <div id="tela"></div>
+    <br/>
+    <form class="d-flex">
+        <div class="col">
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">R$</span>
+                </div>
+                <input type="number" class="form-control" aria-label="Quantia" id="valor">
+                <div class="input-group-append">
+                  <span class="input-group-text">.00</span>
+                </div>
+            </div>              
+              
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="avista" value="avista" checked>
+                <label class="form-check-label" for="inlineRadio1">Ávista</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="pix" value="pix">
+                <label class="form-check-label" for="inlineRadio2">Pix</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="cartao" value="cartao">
+                <label class="form-check-label" for="inlineRadio2">Cart</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="dev" value="dev" >
+                <label class="form-check-label" for="inlineRadio3">dev</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="pg" value="pago" >
+                <label class="form-check-label" for="inlineRadio3">Pg</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="gas" value="gas" >
+                <label class="form-check-label" for="inlineRadio3">Gás</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="extra" value="extra" >
+                <label class="form-check-label" for="inlineRadio3">Extra</label>
+            </div>
+
+            <div class="input-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">Obs:</span>
+                </div>
+                <textarea class="form-control" aria-label="Com textarea" id="obs"></textarea>
+              </div>
+            
+              
+
+              <br/>
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">inicial</span>
+                </div>
+                <input type="number" class="form-control" aria-label="Quantia" id="kmini">
+                <div class="input-group-append">
+                  <span class="input-group-text">Km</span>
+                </div>
+
+                <div class="input-group-prepend">
+                    <span class="input-group-text">final</span>
+                  </div>
+                  <input type="number" class="form-control" aria-label="Quantia" id="kmfim">
+                  <div class="input-group-append">
+                    <span class="input-group-text">Km</span>
+                  </div>
+            </div>              
+            <small>troco</small>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">ini R$</span>
+                </div>
+                <input type="number" class="form-control" aria-label="Quantia" id="trocor">
+                <div class="input-group-append">
+                  <span class="input-group-text">.00</span>
+                </div>
+
+                <div class="input-group-prepend">
+                  <span class="input-group-text">fim R$</span>
+                </div>
+                <input type="number" class="form-control" aria-label="Quantia" id="trocod">
+                <div class="input-group-append">
+                  <span class="input-group-text">.00</span>
+                </div>
+            </div>
+        </div>
+
+        
+
+    </form><br/>
+    <div class="d-flex">
+        <div class="col">
+          
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <button class="btn btn-primary" id="exe">registrar...</button>
+                </div>
+                  <div class="input-group-prepend">
+                    
+                    <span class="input-group-text">comissão motorista</span>
+                  </div>
+                  <input type="number" class="form-control" aria-label="Quantia" id="percentual">
+                  <div class="input-group-append">
+                    <span class="input-group-text">%</span>
+                  </div>
+              </div>
+        </div>
+      </div>
+            
+  </main>
+  <footer>
+    <!-- place footer here -->
+  </footer>
+  <!-- Bootstrap JavaScript Libraries -->
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
+    integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous">
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.min.js"
+    integrity="sha384-7VPbUDkoPSGFnVtYi0QogXtr74QeVeeIs99Qfg5YCF+TidwNdjvaKZX19NZ/e6oz" crossorigin="anonymous">
+  </script>
+</body>
+    <script>
+        var obj = {
+            valor: 0,
+            tipo: '',
+            obs: ''
+        }
+        var reg = new Array();
+        document.getElementById('exe').addEventListener('click', ()=>{
+            obj = {
+                valor: 0,
+                tipo: '',
+                obs: ''
+            }
+            //alert('clicou no botão...');
+            let valor = document.getElementById('valor').value;
+            if(valor > 0){
+                //console.log('maior que zero');
+                obj.valor = valor;
+                //avista, pix ou dev
+                //console.log('a vista: '+ document.getElementById('avista').checked);
+                if (document.getElementById('avista').checked) {
+                    obj.tipo = 'avista';
+                }
+                if (document.getElementById('pix').checked) {
+                    obj.tipo = 'pix';
+                }
+                if (document.getElementById('dev').checked) {
+                    obj.tipo = 'dev';
+                }
+                if (document.getElementById('cartao').checked) {
+                    obj.tipo = 'cartao';
+                }
+                if (document.getElementById('pg').checked) {
+                    obj.tipo = 'pg';
+                }
+                if (document.getElementById('gas').checked) {
+                    obj.tipo = 'gas';
+                }
+                if (document.getElementById('extra').checked) {
+                    obj.tipo = 'extra';
+                }
+                //
+                obj.obs = document.getElementById('obs').value;
+                if (document.getElementById('obs').value == '' && obj.tipo == 'dev' || document.getElementById('obs').value == '' && obj.tipo == 'pg' || document.getElementById('obs').value == '' && obj.tipo == 'extra') {
+                  alert('obs ñ pode ser nullo ...');
+                }else{
+                  reg.push(obj);                  
+                }
+                
+                console.log('R$: '+ obj.valor);
+                console.log('tipo: '+ obj.tipo);
+                console.log('obs: '+ obj.obs);
+                
+            }else{
+                console.log('zero ñ registrado');
+            }
+            reset();
+            imprimir();
+            //console.log(valor);
+            //km rodado
+            let kmRodado = parseInt(document.getElementById('kmfim').value) - parseInt(document.getElementById('kmini').value);
+            document.getElementById('tela').innerHTML += '<br/>km rodado: '+ kmRodado;
+
+        })
+        function reset(){
+            document.getElementById('valor').value = null;
+            document.getElementById('avista').checked = true;
+            document.getElementById('obs').value = '';
+        }
+        function imprimir(){
+          let totalBruto = 0;
+          let totalDia = 0;
+          let liquido = 0;
+          let gas = 0;
+          let extra = 0;
+          let extraTxt = '';
+            //let tela = document.getElementById('tela').innerHTML;
+            document.getElementById('tela').innerHTML = '';
+            for (let i = 0; i < reg.length; i++) {
+                const registro = reg[i];
+                document.getElementById('tela').innerHTML += '<br/>R$: '+ registro.valor +' '+registro.tipo +' <small>Obs: '+ registro.obs+'</small>';
+                //calculos
+                if (registro.tipo == 'avista' || registro.tipo == 'pix' || registro.tipo == 'cartao' || registro.tipo == 'dev') {
+                  totalDia += parseInt(registro.valor);
+                }
+                if (registro.tipo == 'pg'){
+                  totalBruto += parseInt(registro.valor);
+                }
+                //liquido dinheiro em mãos
+                if(registro.tipo == 'pix' || registro.tipo == 'cartao' || registro.tipo == 'dev' || registro.tipo == 'gas' || registro.tipo == 'extra'){
+                  liquido += parseInt(registro.valor);
+                }
+                if (registro.tipo == 'gas') {
+                  gas += parseInt(registro.valor);
+                }
+                if (registro.tipo == 'extra') {
+                  extra += parseInt(registro.valor);
+                  extraTxt += ' *'+registro.obs;
+                }
+            }
+            //
+            document.getElementById('tela').innerHTML += '<hr>total Dia: '+ totalDia;
+            //calcular comissão motorista...
+            if (document.getElementById('percentual').value) {
+              let percent = parseInt(document.getElementById('percentual').value);
+              percent /= 100;
+              let temp = totalDia * percent;
+              document.getElementById('tela').innerHTML += '<hr>comissão motorista: R$ '+ temp;
+            }
+            totalBruto += totalDia;
+            document.getElementById('tela').innerHTML += '<br/>total Bruto: '+ totalBruto;
+            let totalliquido = totalBruto - liquido;
+            if(parseInt(document.getElementById('trocor').value)){
+              totalliquido +=  parseInt(document.getElementById('trocor').value);
+            }
+            if (parseInt(document.getElementById('trocod').value)) {
+              totalliquido -= parseInt(document.getElementById('trocod').value);
+            }
+            
+            
+            document.getElementById('tela').innerHTML += '<br/>total liquido: '+ totalliquido;
+            document.getElementById('tela').innerHTML += '<br/>Gás: '+ gas;
+            document.getElementById('tela').innerHTML += '<br/>Gastos extra: '+ extra +extraTxt;            
+        }
+    </script>
+</html>
