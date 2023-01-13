@@ -252,7 +252,7 @@
             document.getElementById('tela').innerHTML = '';
             for (let i = 0; i < reg.length; i++) {
                 const registro = reg[i];
-                document.getElementById('tela').innerHTML += '<br/>R$: '+ registro.valor +' '+registro.tipo +' <small>Obs: '+ registro.obs+'</small> &nbsp;&nbsp;&nbsp;<strong onclick="delReg('+i+')" class="btn btn-danger btn-sm"> excluir </strong>';
+                document.getElementById('tela').innerHTML += '<br/>R$: '+ registro.valor +' '+registro.tipo +' <small>Obs: '+ registro.obs+'</small> &nbsp;&nbsp;&nbsp;<strong onclick="delReg('+i+')" class="red"> excluir </strong>';
                 //calculos
                 if (registro.tipo == 'avista' || registro.tipo == 'pix' || registro.tipo == 'cartao' || registro.tipo == 'dev') {
                   totalDia += parseInt(registro.valor);
