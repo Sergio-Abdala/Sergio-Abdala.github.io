@@ -118,16 +118,20 @@
                 <div class="input-group-prepend">
                     <button class="btn btn-primary" id="exe">registrar...</button>
                 </div>
-                  <div class="input-group-prepend">
-                    
-                    <span class="input-group-text">comissão motorista</span>
+                  <div class="input-group-prepend">                    
+                    <span class="input-group-text">motora</span>
                   </div>
                   <input type="number" class="form-control" aria-label="Quantia" id="percentual">
-                  <div class="input-group-append">
-                    <span class="input-group-text">%</span>
+                    <div class="input-group-append">
+                      <span class="input-group-text">%</span>                      
+                    </div>
+                    <div class="input-group-prepend">
+                      <button class="btn btn-primary" id="limpar">limpar...</button>
+                    </div>
                   </div>
+
+                
               </div>
-        </div>
       </div>
             
   </main>
@@ -150,7 +154,27 @@
             obs: ''
         }
         var reg = new Array();
+
+        window.onload = function(){
+          console.log('window onload');
+          let strCookie = document.cookie;          
+          if (strCookie != "") {
+            let str = strCookie.split('=');
+            //alert("existe o cookie " + str[1]);
+            reg = JSON.parse(str[1]);
+            console.log('imprimir...');
+            imprimir();
+          }
+          
+        }
         document.getElementById('exe').addEventListener('click', ()=>{
+          //verificar cookie***************************************************************
+          let strCookie = document.cookie;          
+          if (strCookie != "") {
+            let str = strCookie.split('=');
+            //alert("existe o cookie " + str[1]);
+            reg = JSON.parse(str[1]);
+          }else{console.log('ñ tem cookie...');}
             obj = {
                 valor: 0,
                 tipo: '',
@@ -223,7 +247,7 @@
             document.getElementById('tela').innerHTML = '';
             for (let i = 0; i < reg.length; i++) {
                 const registro = reg[i];
-                document.getElementById('tela').innerHTML += '<br/>R$: '+ registro.valor +' '+registro.tipo +' <small>Obs: '+ registro.obs+'</small>';
+                document.getElementById('tela').innerHTML += '<br/>R$: '+ registro.valor +' '+registro.tipo +' <small>Obs: '+ registro.obs+'</small><strong onclick="delReg('+i+')"> excluir </strong>';
                 //calculos
                 if (registro.tipo == 'avista' || registro.tipo == 'pix' || registro.tipo == 'cartao' || registro.tipo == 'dev') {
                   totalDia += parseInt(registro.valor);
@@ -265,7 +289,36 @@
             
             document.getElementById('tela').innerHTML += '<br/>total liquido: '+ totalliquido;
             document.getElementById('tela').innerHTML += '<br/>Gás: '+ gas;
-            document.getElementById('tela').innerHTML += '<br/>Gastos extra: '+ extra +extraTxt;            
+            document.getElementById('tela').innerHTML += '<br/>Gastos extra: '+ extra +extraTxt;
+            //converter obj em string****************************************************************
+            
+            let cookieValor = JSON.stringify(reg);
+            
+            //setCookie
+            document.cookie = "registro="+ cookieValor;
+            console.log('cookie setado => '+document.cookie);
         }
+        document.getElementById('limpar').addEventListener('click', ()=>{
+          console.log('limpar clicado');
+          deletCookie();
+          reg = new Array();
+          imprimir();
+        })
+        //
+        function deletCookie(){
+          document.cookie = "registro=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+        }
+        function delReg(n){
+          if (confirm('tem certeza que deseja excluir o registro '+ reg[n].valor +' : '+ reg[n].tipo)) {
+            reg.splice(n, 1);
+
+            let cookieValor = JSON.stringify(reg);            
+            //setCookie
+            document.cookie = "registro="+ cookieValor;
+            console.log('cookie setado => '+document.cookie);
+            imprimir();
+          }          
+        }
+               
     </script>
 </html>
