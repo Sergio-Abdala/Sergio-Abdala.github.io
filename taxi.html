@@ -10,7 +10,12 @@
   <!-- Bootstrap CSS v5.2.1 -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
-
+  <style>
+    strong{
+      color: darkred;
+      font-size: smaller;
+    }
+  </style>
 </head>
 
 <body>
@@ -247,7 +252,7 @@
             document.getElementById('tela').innerHTML = '';
             for (let i = 0; i < reg.length; i++) {
                 const registro = reg[i];
-                document.getElementById('tela').innerHTML += '<br/>R$: '+ registro.valor +' '+registro.tipo +' <small>Obs: '+ registro.obs+'</small><strong onclick="delReg('+i+')"> excluir </strong>';
+                document.getElementById('tela').innerHTML += '<br/>R$: '+ registro.valor +' '+registro.tipo +' <small>Obs: '+ registro.obs+'</small> &nbsp;&nbsp;&nbsp;<strong onclick="delReg('+i+')" class="btn btn-danger btn-sm"> excluir </strong>';
                 //calculos
                 if (registro.tipo == 'avista' || registro.tipo == 'pix' || registro.tipo == 'cartao' || registro.tipo == 'dev') {
                   totalDia += parseInt(registro.valor);
