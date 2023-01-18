@@ -156,36 +156,36 @@
         var obj = {
             valor: 0,
             tipo: '',
+            km: 0,
             obs: ''
         }
         var reg = new Array();
 
         window.onload = function(){
           console.log('window onload');
-          let strCookie = document.cookie;          
-          if (strCookie != "") {
-            let str = strCookie.split('=');
-            //alert("existe o cookie " + str[1]);
-            reg = JSON.parse(str[1]);
-            console.log('imprimir...');
-            imprimir();
-          }
+
+          carregarRegistros();
           
         }
         document.getElementById('exe').addEventListener('click', ()=>{
-          //verificar cookie***************************************************************
-          let strCookie = document.cookie;          
-          if (strCookie != "") {
-            let str = strCookie.split('=');
-            //alert("existe o cookie " + str[1]);
-            reg = JSON.parse(str[1]);
-          }else{console.log('ñ tem cookie...');}
+          if (document.getElementById('kmini').value) {
+            setCookie('kmini', parseInt(document.getElementById('kmini').value));
+          }
+          if (document.getElementById('kmfim').value) {
+            setCookie('kmfim', parseInt(document.getElementById('kmfim').value));
+          }
+          if (document.getElementById('trocor').value) {
+            setCookie('trocor', parseInt(document.getElementById('trocor').value));
+          }
+          if (document.getElementById('trocod').value) {
+            setCookie('trocod', parseInt(document.getElementById('trocod').value));
+          }
             obj = {
                 valor: 0,
                 tipo: '',
+                km: 0,
                 obs: ''
             }
-            //alert('clicou no botão...');
             let valor = document.getElementById('valor').value;
             if(valor > 0){
                 //console.log('maior que zero');
@@ -218,57 +218,74 @@
                 if (document.getElementById('obs').value == '' && obj.tipo == 'dev' || document.getElementById('obs').value == '' && obj.tipo == 'pg' || document.getElementById('obs').value == '' && obj.tipo == 'extra') {
                   alert('obs ñ pode ser nullo ...');
                 }else{
-                  reg.push(obj);                  
+                  if(document.getElementById('kmfim').value){
+                    obj.km = parseInt(document.getElementById('kmfim').value);
+                  }
+                  reg.push(obj);
                 }
-                
                 console.log('R$: '+ obj.valor);
                 console.log('tipo: '+ obj.tipo);
                 console.log('obs: '+ obj.obs);
-                
+                console.log('Km: '+ obj.km);
             }else{
                 console.log('zero ñ registrado');
             }
+            
+            //parseInt(document.getElementById('kmfim').value)
             reset();
             imprimir();
-            //console.log(valor);
-            //km rodado
-            let kmRodado = parseInt(document.getElementById('kmfim').value) - parseInt(document.getElementById('kmini').value);
-            document.getElementById('tela').innerHTML += '<br/>km rodado: '+ kmRodado;
-
+        })
+        document.getElementById('limpar').addEventListener('click', ()=>{
+          console.log('limpar clicado');
+          deletCookie();          
+          imprimir();
         })
         function reset(){
             document.getElementById('valor').value = null;
             document.getElementById('avista').checked = true;
             document.getElementById('obs').value = '';
         }
-        function imprimir(){
+        function imprimir(){//aqui é feito as somas do array de registros
           let totalBruto = 0;
           let totalDia = 0;
           let liquido = 0;
           let gas = 0;
           let extra = 0;
           let extraTxt = '';
-            //let tela = document.getElementById('tela').innerHTML;
-            document.getElementById('tela').innerHTML = '';
-            let cont = 0;
+          let km = 0;
+            limparTela();
+            let cont = 0;//contador de corridas...
             for (let i = 0; i < reg.length; i++) {
                 const registro = reg[i];
-                if(registro.tipo != 'gas' && registro.tipo != 'extra' && registro.tipo != 'pg'){
-                  cont++;
-                  document.getElementById('tela').innerHTML += '<br/>'+cont+' ) ';
-                }else{
-                  if(registro.tipo == 'pg'){
-                    document.getElementById('tela').innerHTML += '<br/> ; )';
+                /*adiciona icone
+                n) corrida
+                ;) pagamento de divida
+                x) gasto
+                */
+                  if(registro.tipo != 'gas' && registro.tipo != 'extra' && registro.tipo != 'pg'){
+                    cont++;
+                    addTela('<br/>'+cont+' ) ');
                   }else{
-                    document.getElementById('tela').innerHTML += '<br/> x )';
+                    if(registro.tipo == 'pg'){
+                      addTela('<br/> ; )');
+                    }else{
+                      addTela('<br/> x )');
+                    }                    
                   }
-                  
-                }
-                document.getElementById('tela').innerHTML += 'R$: '+ registro.valor +' '+registro.tipo +' <small>Obs: '+ registro.obs+'</small> &nbsp;&nbsp;&nbsp;<strong onclick="delReg('+i+')" class="red"> excluir </strong>';
-                //calculos
+                addTela('R$: '+ registro.valor +' '+registro.tipo +' <small>Obs: '+ registro.obs);
+                //calculos...
                 if (registro.tipo == 'avista' || registro.tipo == 'pix' || registro.tipo == 'cartao' || registro.tipo == 'dev') {
                   totalDia += parseInt(registro.valor);
+                  if (km < registro.km) {
+                    km = registro.km;
+                    //kilometragem mais alta no momento
+                    //calcular R$/km do momento atual
+                    let mediakm = totalDia / (km - parseInt(document.getElementById('kmini').value));
+                    addTela(' R$/Km: '+ mediakm +' ');
+                  }                  
                 }
+                //adiciona link excluir
+                addTela('</small> &nbsp;&nbsp;&nbsp;<strong onclick="delReg('+i+')" class="red"> excluir </strong>')
                 if (registro.tipo == 'pg'){
                   totalBruto += parseInt(registro.valor);
                 }
@@ -284,17 +301,18 @@
                   extraTxt += ' *'+registro.obs;
                 }
             }
+
             //
-            document.getElementById('tela').innerHTML += '<hr>total Dia: '+ totalDia;
+            addTela('<hr>total Dia: '+ totalDia);
             //calcular comissão motorista...
             if (document.getElementById('percentual').value) {
               let percent = parseInt(document.getElementById('percentual').value);
               percent /= 100;
               let temp = totalDia * percent;
-              document.getElementById('tela').innerHTML += '<hr>comissão motorista: R$ '+ temp;
+              addTela('<hr>comissão motorista: R$ '+ temp);
             }
             totalBruto += totalDia;
-            document.getElementById('tela').innerHTML += '<br/>total Bruto: '+ totalBruto;
+            addTela('<br/>total Bruto: '+ totalBruto);
             let totalliquido = totalBruto - liquido;
             if(parseInt(document.getElementById('trocor').value)){
               totalliquido +=  parseInt(document.getElementById('trocor').value);
@@ -304,38 +322,100 @@
             }
             
             
-            document.getElementById('tela').innerHTML += '<br/>total liquido: '+ totalliquido;
-            document.getElementById('tela').innerHTML += '<br/>Gás: '+ gas;
-            document.getElementById('tela').innerHTML += '<br/>Gastos extra: '+ extra +extraTxt;
+            addTela('<br/>total liquido: '+ totalliquido);
+            addTela('<br/>Gás: '+ gas);
+            addTela('<br/>Gastos extra: '+ extra +extraTxt);
             //converter obj em string****************************************************************
+            //let cookieValor = JSON.stringify(reg);            
+            setCookie('registro', JSON.stringify(reg));
+          //km rodado
+            let kmRodado = parseInt(document.getElementById('kmfim').value) - parseInt(document.getElementById('kmini').value);
             
-            let cookieValor = JSON.stringify(reg);
-            
-            //setCookie
-            document.cookie = "registro="+ cookieValor;
-            console.log('cookie setado => '+document.cookie);
+            addTela('<br/>km rodado: '+ kmRodado);
         }
-        document.getElementById('limpar').addEventListener('click', ()=>{
-          console.log('limpar clicado');
-          deletCookie();
-          reg = new Array();
-          imprimir();
-        })
+        
         //
+        function setCookie(nameCookie, cookieConteudo) {
+            const d = new Date();
+            d.setTime(d.getTime() + (365*24*60*60*1000));
+            let expires = "expires="+ d.toUTCString();
+            document.cookie = nameCookie +"="+ cookieConteudo +";"+ expires;
+            console.log('cookie setado => '+document.cookie);
+          
+        }
+        
         function deletCookie(){
           document.cookie = "registro=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+          reg = new Array();
+          document.cookie = "kmini=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+          document.cookie = "kmfim=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+          document.cookie = "trocor=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+          document.cookie = "trocod=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
         }
+        
         function delReg(n){
           if (confirm('tem certeza que deseja excluir o registro '+ reg[n].valor +' : '+ reg[n].tipo)) {
             reg.splice(n, 1);
-
-            let cookieValor = JSON.stringify(reg);            
-            //setCookie
-            document.cookie = "registro="+ cookieValor;
+            setCookie('registro', JSON.stringify(reg));
+            //let cookieValor = JSON.stringify(reg);
+            //document.cookie = "registro="+ cookieValor;
             console.log('cookie setado => '+document.cookie);
             imprimir();
           }          
         }
-               
+              
+        function carregarRegistros(){
+          
+          let strCookie = document.cookie;          
+          if (strCookie != "") {
+            let bis = strCookie.split('; ');
+            bis.forEach(biscoito => {
+              let str = biscoito.split('=');
+              console.log('cookie:'+ str[0] +' => '+ str[1]);//
+              //carregar registro...
+              if (str[0] == "registro") {//carrega registro do cookie para o array reg... ATENÇÃO ao espaço no inicio da string...
+                reg = JSON.parse(str[1]);
+                console.log('=====>>>>> carregou reg...');
+              }
+              //carregar cookie kmini...
+              if (str[0] == 'kmini') {
+                if (!document.getElementById('kmini').value) {
+                  document.getElementById('kmini').value = parseInt(str[1]);
+                }
+              }
+              if (str[0] == 'kmfim') {
+                if (!document.getElementById('kmfim').value) {
+                  document.getElementById('kmfim').value = parseInt(str[1]);
+                }
+              }
+              if (str[0] == 'trocor') {
+                if (!document.getElementById('trocor').value) {
+                  document.getElementById('trocor').value = parseInt(str[1]);
+                }
+              }
+
+
+              if (str[0] == 'trocod') {
+                if (!document.getElementById('trocod').value) {
+                  document.getElementById('trocod').value = parseInt(str[1]);
+                }
+              }
+
+
+            });
+            console.log('registros carregados a partir dos cookies...');
+                        
+            console.log('imprimir...');
+            imprimir();
+          }else{
+            console.log('sem registros em cookie...');
+          }
+        }
+        function addTela(conteudo){
+          document.getElementById('tela').innerHTML += conteudo;
+        }
+        function limparTela(){
+          document.getElementById('tela').innerHTML = '';
+        }
     </script>
 </html>
