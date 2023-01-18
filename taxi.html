@@ -281,7 +281,7 @@
                     //kilometragem mais alta no momento
                     //calcular R$/km do momento atual
                     let mediakm = totalDia / (km - parseInt(document.getElementById('kmini').value));
-                    addTela(' R$/Km: '+ mediakm +' ');
+                    addTela(' R$/Km: '+ mediakm.toFixed(2) +' ');
                   }                  
                 }
                 //adiciona link excluir
