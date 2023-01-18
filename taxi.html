@@ -72,10 +72,7 @@
                 </div>
                 <textarea class="form-control" aria-label="Com textarea" id="obs"></textarea>
               </div>
-            
               
-
-              <br/>
               <div class="input-group mb-3">
                 <div class="input-group-prepend">
                   <span class="input-group-text">inicial</span>
@@ -92,7 +89,31 @@
                   <div class="input-group-append">
                     <span class="input-group-text">Km</span>
                   </div>
-            </div>              
+            </div> 
+
+            <div class="d-flex">
+              <div class="col">
+                
+                    <div class="input-group mb-3">
+                      <div class="input-group-prepend">
+                          <button class="btn btn-primary" id="exe">registrar...</button>
+                      </div>
+                        <div class="input-group-prepend">                    
+                          <span class="input-group-text">motora</span>
+                        </div>
+                        <input type="number" class="form-control" aria-label="Quantia" id="percentual">
+                          <div class="input-group-append">
+                            <span class="input-group-text">%</span>                      
+                          </div>
+                          <div class="input-group-prepend">
+                            <button class="btn btn-primary" id="limpar">limpar...</button>
+                          </div>
+                        </div>
+
+                      
+                    </div>
+            </div>
+
             <small>troco</small>
             <div class="input-group mb-3">
                 <div class="input-group-prepend">
@@ -115,30 +136,8 @@
 
         
 
-    </form><br/>
-    <div class="d-flex">
-        <div class="col">
-          
-              <div class="input-group mb-3">
-                <div class="input-group-prepend">
-                    <button class="btn btn-primary" id="exe">registrar...</button>
-                </div>
-                  <div class="input-group-prepend">                    
-                    <span class="input-group-text">motora</span>
-                  </div>
-                  <input type="number" class="form-control" aria-label="Quantia" id="percentual">
-                    <div class="input-group-append">
-                      <span class="input-group-text">%</span>                      
-                    </div>
-                    <div class="input-group-prepend">
-                      <button class="btn btn-primary" id="limpar">limpar...</button>
-                    </div>
-                  </div>
+    </form>
 
-                
-              </div>
-      </div>
-            
   </main>
   <footer>
     <!-- place footer here -->
@@ -157,6 +156,7 @@
             valor: 0,
             tipo: '',
             km: 0,
+            cont: 0,
             obs: ''
         }
         var reg = new Array();
@@ -173,6 +173,10 @@
           }
           if (document.getElementById('kmfim').value) {
             setCookie('kmfim', parseInt(document.getElementById('kmfim').value));
+            //avaliar se ultimo registro tem valor
+            if (!reg[reg.length -1].km) {
+              alert('km ñ foi registrado');
+            }
           }
           if (document.getElementById('trocor').value) {
             setCookie('trocor', parseInt(document.getElementById('trocor').value));
@@ -184,6 +188,7 @@
                 valor: 0,
                 tipo: '',
                 km: 0,
+                cont: 0,
                 obs: ''
             }
             let valor = document.getElementById('valor').value;
@@ -265,11 +270,14 @@
                   if(registro.tipo != 'gas' && registro.tipo != 'extra' && registro.tipo != 'pg'){
                     cont++;
                     addTela('<br/>'+cont+' ) ');
+                    reg[i].cont = cont;
                   }else{
                     if(registro.tipo == 'pg'){
                       addTela('<br/> ; )');
+                      reg[i].cont = ':';
                     }else{
                       addTela('<br/> x )');
+                      reg[i].cont = 'x';
                     }                    
                   }
                 addTela('R$: '+ registro.valor +' '+registro.tipo +' <small>Obs: '+ registro.obs);
@@ -281,8 +289,8 @@
                     //kilometragem mais alta no momento
                     //calcular R$/km do momento atual
                     let mediakm = totalDia / (km - parseInt(document.getElementById('kmini').value));
-                    addTela(' R$/Km: '+ mediakm.toFixed(2) +' ');
-                  }                  
+                    addTela('<small> R$/Km: '+ mediakm.toFixed(2) +'</small> ');                    
+                  }
                 }
                 //adiciona link excluir
                 addTela('</small> &nbsp;&nbsp;&nbsp;<strong onclick="delReg('+i+')" class="red"> excluir </strong>')
@@ -309,7 +317,7 @@
               let percent = parseInt(document.getElementById('percentual').value);
               percent /= 100;
               let temp = totalDia * percent;
-              addTela('<hr>comissão motorista: R$ '+ temp);
+              addTela('<hr>comissão motorista: R$ '+ temp.toFixed(2));
             }
             totalBruto += totalDia;
             addTela('<br/>total Bruto: '+ totalBruto);
@@ -330,8 +338,8 @@
             setCookie('registro', JSON.stringify(reg));
           //km rodado
             let kmRodado = parseInt(document.getElementById('kmfim').value) - parseInt(document.getElementById('kmini').value);
-            
-            addTela('<br/>km rodado: '+ kmRodado);
+            mediakmRodado = totalDia / kmRodado;
+            addTela('<br/>km rodado: '+ kmRodado +'&nbsp;&nbsp;&nbsp;&nbsp;<small> R$/Km '+ mediakmRodado.toFixed(2) +' </small>');
         }
         
         //
@@ -345,16 +353,21 @@
         }
         
         function deletCookie(){
-          document.cookie = "registro=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-          reg = new Array();
-          document.cookie = "kmini=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-          document.cookie = "kmfim=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-          document.cookie = "trocor=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-          document.cookie = "trocod=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+          if (confirm('tem certeza que deseja excluir todos os registros???')) {
+            document.cookie = "registro=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+            reg = new Array();
+            document.cookie = "kmini=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+            document.cookie = "kmfim=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+            document.cookie = "trocor=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+            document.cookie = "trocod=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+          }else{
+            alert('registros mantidos...');
+          }
+          
         }
         
         function delReg(n){
-          if (confirm('tem certeza que deseja excluir o registro '+ reg[n].valor +' : '+ reg[n].tipo)) {
+          if (confirm('tem certeza que deseja excluir o registro '+ reg[n].cont +' ) R$ '+ reg[n].valor +' : '+ reg[n].tipo)) {
             reg.splice(n, 1);
             setCookie('registro', JSON.stringify(reg));
             //let cookieValor = JSON.stringify(reg);
