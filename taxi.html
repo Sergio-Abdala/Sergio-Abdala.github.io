@@ -174,8 +174,9 @@
           if (document.getElementById('kmfim').value) {
             setCookie('kmfim', parseInt(document.getElementById('kmfim').value));
             //avaliar se ultimo registro tem valor
-            if (!reg[reg.length -1].km) {
-              alert('km ñ foi registrado');
+            if (reg[reg.length -1].km != parseInt(document.getElementById('kmfim').value)) {
+              alert('km final setado no ultimo registro');
+              reg[reg.length -1].km = parseInt(document.getElementById('kmfim').value);
             }
           }
           if (document.getElementById('trocor').value) {
@@ -245,6 +246,7 @@
           deletCookie();          
           imprimir();
         })
+        
         function reset(){
             document.getElementById('valor').value = null;
             document.getElementById('avista').checked = true;
@@ -314,6 +316,7 @@
             addTela('<hr>total Dia: '+ totalDia);
             //calcular comissão motorista...
             if (document.getElementById('percentual').value) {
+              setCookie('percentual', document.getElementById('percentual').value);
               let percent = parseInt(document.getElementById('percentual').value);
               percent /= 100;
               let temp = totalDia * percent;
@@ -336,7 +339,7 @@
             //converter obj em string****************************************************************
             //let cookieValor = JSON.stringify(reg);            
             setCookie('registro', JSON.stringify(reg));
-          //km rodado
+            //km rodado
             let kmRodado = parseInt(document.getElementById('kmfim').value) - parseInt(document.getElementById('kmini').value);
             mediakmRodado = totalDia / kmRodado;
             addTela('<br/>km rodado: '+ kmRodado +'&nbsp;&nbsp;&nbsp;&nbsp;<small> R$/Km '+ mediakmRodado.toFixed(2) +' </small>');
@@ -360,6 +363,8 @@
             document.cookie = "kmfim=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
             document.cookie = "trocor=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
             document.cookie = "trocod=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+            document.cookie = "percentual=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+            //document.getElementById('percentual').value = null;
           }else{
             alert('registros mantidos...');
           }
@@ -406,15 +411,16 @@
                   document.getElementById('trocor').value = parseInt(str[1]);
                 }
               }
-
-
               if (str[0] == 'trocod') {
                 if (!document.getElementById('trocod').value) {
                   document.getElementById('trocod').value = parseInt(str[1]);
                 }
               }
-
-
+              if (str[0] == 'percentual') {
+                if (!document.getElementById('percentual').value) {
+                  document.getElementById('percentual').value = parseInt(str[1]);
+                }
+              }
             });
             console.log('registros carregados a partir dos cookies...');
                         
