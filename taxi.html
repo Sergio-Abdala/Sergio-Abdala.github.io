@@ -168,23 +168,7 @@
           
         }
         document.getElementById('exe').addEventListener('click', ()=>{
-          if (document.getElementById('kmini').value) {
-            setCookie('kmini', parseInt(document.getElementById('kmini').value));
-          }
-          if (document.getElementById('kmfim').value) {
-            setCookie('kmfim', parseInt(document.getElementById('kmfim').value));
-            //avaliar se ultimo registro tem valor
-            if (reg[reg.length -1].km != parseInt(document.getElementById('kmfim').value)) {
-              alert('km final setado no ultimo registro');
-              reg[reg.length -1].km = parseInt(document.getElementById('kmfim').value);
-            }
-          }
-          if (document.getElementById('trocor').value) {
-            setCookie('trocor', parseInt(document.getElementById('trocor').value));
-          }
-          if (document.getElementById('trocod').value) {
-            setCookie('trocod', parseInt(document.getElementById('trocod').value));
-          }
+          
             obj = {
                 valor: 0,
                 tipo: '',
@@ -238,6 +222,23 @@
             }
             
             //parseInt(document.getElementById('kmfim').value)
+            if (document.getElementById('kmini').value) {
+              setCookie('kmini', parseInt(document.getElementById('kmini').value));
+            }
+            if (document.getElementById('kmfim').value) {
+              setCookie('kmfim', parseInt(document.getElementById('kmfim').value));
+              //avaliar se ultimo registro tem valor
+              if (reg[reg.length -1].km != parseInt(document.getElementById('kmfim').value) && reg.length) {
+                alert('km final setado no ultimo registro');
+                reg[reg.length -1].km = parseInt(document.getElementById('kmfim').value);
+              }
+            }
+            if (document.getElementById('trocor').value) {
+              setCookie('trocor', parseInt(document.getElementById('trocor').value));
+            }
+            if (document.getElementById('trocod').value) {
+              setCookie('trocod', parseInt(document.getElementById('trocod').value));
+            }
             reset();
             imprimir();
         })
