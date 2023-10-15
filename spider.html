@@ -1,0 +1,1188 @@
+<!doctype html>
+<html lang="pt-br">
+
+<head>
+  <title><%= title %></title>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS v5.2.1 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+  <style>
+    canvas{
+      background-color: #6066E8;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <!-- place navbar here -->
+  </header>
+  <main>
+    <div class="container">
+      <div class="row">
+        <canvas id="tela" class="col"></canvas>
+      </div>
+    </div>
+    
+  </main>
+  <footer>
+    developer by Sérgio Abdala...
+  </footer>
+  <!-- Bootstrap JavaScript Libraries -->
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
+    integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous">
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.min.js"
+    integrity="sha384-7VPbUDkoPSGFnVtYi0QogXtr74QeVeeIs99Qfg5YCF+TidwNdjvaKZX19NZ/e6oz" crossorigin="anonymous">
+  </script>
+</body>
+    <!-- src="javascripts/sprite.js" -->
+  <script>
+    function Sprite(imgSrc, flag, srcX, srcY, lar, alt, posX, posY){
+	//atributos.............................
+		this.img = new Image();
+		this.img.src = imgSrc;
+        this.srcX = srcX;
+		this.srcY = srcY;
+        this.lar = lar;
+		this.alt = alt;
+		this.escala = 1;
+        this.posX = posX;
+		this.posY = posY;
+        this.movRight = false;
+		this.movLeft = false;
+		this.movUp = false;
+		this.movDown = false;
+		this.speed = 1;
+        this.flag = flag;
+		this.status = false;
+		this.frequencia = 26;
+		this.contLoop = 0;
+    //metodos..............................
+    this.render = function(){//renderizar em tela...
+        //if (this.exibir) {
+            ctx.drawImage(this.img, this.srcX, this.srcY, this.lar, this.alt, this.posX, this.posY, this.lar*this.escala, this.alt*this.escala);
+        //}		
+    }
+    this.exe = function(){
+        //movimento 
+        if(this.movRight){
+            this.posX += this.speed;
+            
+        }else if(this.movLeft){
+            this.posX -= this.speed;
+            
+        }		
+        if (this.movUp) {
+            this.posY -= this.speed;
+			if(this.flag == 'player'){
+				
+				(GLOBAIS.dist > 0) ? GLOBAIS.dist-- : GLOBAIS.dist++;
+			}
+        }else if(this.movDown){
+            this.posY += this.speed;
+        }
+		//
+		if (this.flag == 'vilao') {
+			this.escala = 0.7;
+			if(colide(this,sprites[encontrar('teia')]) && sprites[encontrar('teia')].lar > 10) {//vilão corta teia
+				//identificar lado que o vilão está olhando
+				this.srcY = 288;
+				this.posY -= 15;
+				this.lar = 70;
+				this.alt = 45;
+				this.flag = 'golpe';
+				sprites[encontrar('teia')].lar = 5;//evita homem aranha subir mantendo up pressionado...
+				if (this.srcX == 5) {//-->
+					this.srcX = 73;//-->				
+				}
+				if (this.srcX == 209) {//<-- 
+					//console.log(sprites[encontrar('teia')].posX - this.posX < this.lar);
+					if (sprites[encontrar('teia')].posX - this.posX < this.lar && sprites[encontrar('teia')].posX - this.posX > 0) { //essa vira de lado
+						this.srcX = 73;
+						this.posX += this.lar/4;
+						this.posY += this.lar/25;
+						//this.flag = 'vilao';
+					}else{
+						this.srcX = 207;//<--
+						this.posX -= this.lar/25;
+					}				
+				}
+				//homem aranha cai...
+				GLOBAIS.caindo = true;		
+				GLOBAIS.teiaY = 0;
+				GLOBAIS.teiaX = 0;
+			}
+		}		
+		if (this.flag == 'superVilao') {
+			if (this.contLoop > this.frequencia) {//animação
+				this.contLoop = 0;
+				
+				if (this.srcY == 522) {//doende verde... srcY = 522
+					if (this.movRight) {
+						(this.srcX == 0) ? this.srcX = 26 : this.srcX = 0;
+					}
+					if (this.movLeft) {
+						(this.srcX == 168) ? this.srcX = 193 : this.srcX = 168;
+					}
+	
+					if (this.posX > cnv.width - this.lar) {
+						this.movLeft = true;
+						this.movRight = false;
+						this.srcX = 51;
+					}
+					if (this.posX < 0) {
+						this.movRight = true;
+						this.movLeft = false;
+						this.srcX = 51;
+					}
+				}
+				
+				if (this.srcY == 386) {//abutre... srcY = 388
+					if (this.srcX == 0) {
+						this.srcX = 32;
+					} else if(this.srcX == 32) {
+						this.srcX = 64;
+					}else if(this.srcX == 64){
+						this.srcX = 97;
+					}else if(this.srcX == 97) {
+						this.srcX = 130;
+					}else if(this.srcX == 130){
+						this.srcX = 0;
+					}
+	
+					if (this.posX > cnv.width) {
+						this.posX = -30;
+						this.flag = 'excluir'
+					}
+					if (this.posX < 0) {
+						this.movRight = true;
+						this.movLeft = false;
+					}
+				}
+				
+				if (this.srcY == 40){//eletro
+					this.srcY = 82;
+					(this.posX > cnv.width) ? this.flag='excluir' : null;
+				}else if (this.srcY == 82) {
+					this.srcY = 40;
+					(this.posX > cnv.width) ? this.flag='excluir' : null;
+				}
+				//
+			}
+			this.contLoop++;
+			if (colide(this,sprites[encontrar('teia')]) && sprites[encontrar('teia')].lar > 10) {//superVilão corta teia
+				//homem aranha cai...
+				GLOBAIS.caindo = true;						
+				GLOBAIS.teiaY = 0;
+				GLOBAIS.teiaX = 0;
+			}
+			if (colide(this, sprites[encontrar('player')])) {//colisão superVilão com player
+				GLOBAIS.pontos--;
+			}
+		}
+		if (this.flag == 'bomba' && this.posY > 25) {//acende bomba
+			if (this.contLoop > this.frequencia) {
+				this.contLoop = 0;
+				(this.srcX == 65) ? this.srcX = 85 : this.srcX = 65;
+			}
+			this.contLoop++;
+			//dar um jeiro de chamar apenas uma vez o timer para explosão da bomba
+			if (!this.status) {
+				this.status = true;
+				setTimeout(() => {
+					this.flag = 'explosao';					
+				}, 3000);
+			}
+		}
+		if (this.flag == 'explosao') {
+			this.frequencia = 4;
+			if (this.contLoop > this.frequencia) {//animação
+				this.contLoop = 0;
+				(this.srcX == 279) ? this.flag = 'excluir' : null;
+				if(this.srcX == 242) {
+					this.srcX = 279;
+					this.escala = 1.5;//tem de ajustar para novo tamanho de sprite derrubar homem-aranha???
+					this.posX -= 9;
+					this.posY -= 8;
+					this.lar = 58;
+					this.alt = 58;
+				}
+				(this.srcX == 207) ? this.srcX = 242 : null;				
+				(this.srcX == 171) ? this.srcX = 207 : null;
+				if(this.srcX == 65 || this.srcX == 85) {
+					//'inicio explosão'
+					this.srcX = 171;
+					this.srcY = 155;
+					this.lar = 34;
+					this.alt = 34;
+					this.posX -= 10;
+					this.posY -= 7;
+				}
+			}
+			this.contLoop++;
+			//colisão com player ou ponta da teia
+			if (colide(this, sprites[encontrar('player')]) || colide(this, sprites[encontrar('teia')])) {
+				GLOBAIS.caindo = true;		
+				GLOBAIS.teiaY = 0;
+				GLOBAIS.teiaX = 0;
+			}
+		}
+		//player colidiu com ...
+		if (colide(this,sprites[encontrar('player')]) && (this.flag == 'vilao' || this.flag == 'bomba')) {
+			if(this.flag == 'vilao'){
+				GLOBAIS.pontos += 50; // pontuação do vilão
+				GLOBAIS.teiaCarga += 50;
+				this.flag = 'excluir';
+			}
+			if (this.flag == 'bomba') {
+				GLOBAIS.pontos += 100; // pontuação da bomba
+				GLOBAIS.teiaCarga += 100;
+				//this.flag = 'excluir'; //ao excluir player vai direto para posição da ponta teia
+				this.flag = 'bombaDesarmada';
+				this.posY -= this.alt;
+			}
+					
+		}
+		if (this.flag == 'bombaDesarmada' && this.posY < cnv.height) {
+			this.posY++;
+		}
+		if (this.flag == 'teia') {
+			//teia off...
+			if ((pontaTeia() == 'player' && this.lar == 15) || (this.meioy() > sprites[encontrar('player')].meioy())) {
+				this.srcX = 5;//diminui teia
+				this.srcY = 5;
+				this.lar = 5;
+				this.alt = 5;
+				GLOBAIS.teiaY = 0;
+				GLOBAIS.teiaX = 0;
+				sprites[encontrar('player')].movRight = false;//paraliza homem aranha
+				sprites[encontrar('player')].movLeft = false;
+				sprites[encontrar('player')].movUp = false;
+				//sprite inicial
+				sprites[encontrar('player')].srcX = 136;
+				sprites[encontrar('player')].srcY = 208;
+				sprites[encontrar('player')].lar = 23;
+				sprites[encontrar('player')].alt = 36;
+				sprites[encontrar('player')].posX = this.posX -4;
+				GLOBAIS.ajustar = true;
+			}
+			if (this.meioy() > sprites[encontrar('player')].meioy()) {
+				sprites[encontrar('player')].posX = this.posX;//remendo em avaliação???
+			}
+		}
+		if (GLOBAIS.ajustar) {
+			GLOBAIS.ajustar = false;
+			if (sprites[encontrar('player')].meiox() > cnv.width/2 +1) {//+1 ou -1 é por que quando player ficava em posição tipo 150.5 trancava GLOBAIS.ajustar em true...
+				GLOBAIS.ajustar = true;
+				(this.flag != 'placar' && this.flag != 'vida') ? this.posX-- : null;
+			}
+			if (sprites[encontrar('player')].meiox() < cnv.width/2 -1) {
+				GLOBAIS.ajustar = true;
+				(this.flag != 'placar' && this.flag != 'vida') ? this.posX++ : null;
+			}
+			if (sprites[encontrar('player')].meioy() > cnv.height/2+1 + GLOBAIS.paredeLar) {
+				//GLOBAIS.ajustar = true;
+				//this.posY--;
+			}
+			if (sprites[encontrar('player')].meioy() < cnv.height/2 + GLOBAIS.paredeLar*1.5) {
+				GLOBAIS.ajustar = true;
+				(this.flag != 'placar' && this.flag != 'vida') ? this.posY++ : null;
+			}
+		}
+		if(GLOBAIS.caindo){	
+			sprites[encontrar('teia')].srcX = 5;
+			sprites[encontrar('teia')].srcY = 5;
+			sprites[encontrar('teia')].lar = 5;
+			sprites[encontrar('teia')].alt = 5;
+
+			sprites[encontrar('player')].movRight = false;
+			sprites[encontrar('player')].movLeft = false;
+			sprites[encontrar('player')].movUp = false;
+			//
+			sprites[encontrar('player')].srcX = 47;
+			sprites[encontrar('player')].srcY = 262;
+			sprites[encontrar('player')].lar = 31;
+			sprites[encontrar('player')].alt = 27;
+
+			if(abaixoDaTela()){
+				(this.flag != 'player' && this.flag != 'teia' && this.flag != 'placar' && this.flag != 'vida') ? this.posY-=2 : null;
+			}else{
+				if(sprites[encontrar('player')].posY < cnv.height - sprites[encontrar('player')].alt) {
+					sprites[encontrar('player')].movDown = true;
+				}else{
+					sprites[encontrar('player')].movDown = false;
+					//homem aranha morre, se esburracha no chão
+					sprites[encontrar('player')].srcX = 247;
+					sprites[encontrar('player')].srcY = 280-14;
+					sprites[encontrar('player')].lar = 40;
+					//console.log('perdeu vida...');
+					GLOBAIS.vida--;
+					GLOBAIS.caindo = false;
+				}
+			}
+		}
+    }
+}
+Sprite.prototype.metax = function(){
+	return (this.lar) / 2;
+}
+Sprite.prototype.metay = function(){
+	return (this.alt) / 2;
+}
+Sprite.prototype.meiox = function(){
+	return this.posX + this.metax();
+}
+Sprite.prototype.meioy = function(){
+	return this.posY + this.metay();
+}
+function bloqueando(p1, p2){//(personagem, objeto)
+	// p1 --> personagem
+	// p2 --> parede bloqueante elemento de interação..
+	//catetos distancia entre os pontos
+	let catx = p1.meiox() - p2.meiox();
+	let caty = p1.meioy() - p2.meioy();
+	//soma das metades
+	let somax = p1.metax() + p2.metax();
+	let somay = p1.metay() + p2.metay();
+	// tocando-se!!!!!!!!!!
+	if (Math.abs(catx) < somax && Math.abs(caty) < somay) {
+		
+		let overlapx = somax - Math.abs(catx);
+		let overlapy = somay - Math.abs(caty);
+		if (overlapx >= overlapy) { //colisão por cima ou por baixo
+			this.metaHorizontal = this.metaVertical = null;
+			p1.movUp = p1.movDown = p1.movLeft = p1.movRight = false;
+			if (caty > 0) { // bateu a cabeça do personagem colidiu parte de cima do personagem que esta sendo controlado
+				p1.posY += overlapy;
+				//
+				console.log('bateu cabeça: '+ p2.id);				
+			} else {
+				p1.posY -= overlapy;
+				//
+				console.log('esta pisando: '+ p2.id);				
+			}
+		} else { // colisão pelos lados esquerda ou direita
+			this.metaHorizontal = this.metaVertical = null;
+			p1.movUp = p1.movDown = p1.movLeft = p1.movRight = false;
+			if(catx > 0){ // colidiu na esquerda
+				p1.posX += overlapx;
+				//
+				console.log('player bateu à esquerda: '+ p2.id);
+			}else{
+				p1.posX -= overlapx;
+				//
+				console.log('player bateu à direita: '+ p2.id);
+			}
+		}
+	}
+}
+function empurando(p2, p1){//(personagem, objeto)
+	// p1 --> personagem
+	// p2 --> parede bloqueante elemento de interação..
+	//catetos distancia entre os pontos
+	let catx = p1.meiox() - p2.meiox();
+	let caty = p1.meioy() - p2.meioy();
+	//soma das metades
+	let somax = p1.metax() + p2.metax();
+	let somay = p1.metay() + p2.metay();
+	// tocando-se!!!!!!!!!!
+	if (Math.abs(catx) < somax && Math.abs(caty) < somay) {
+		//p2.ver = false;
+		//setTimeout(function(){ p2.ver = true; }, 1000);
+		let overlapx = somax - Math.abs(catx);
+		let overlapy = somay - Math.abs(caty);
+		if (overlapx >= overlapy) { //colisão por cima ou por baixo
+			if (caty > 0) { // bateu a cabeça do personagem colidiu parte de cima do personagem que esta sendo controlado
+				p1.worldY += overlapy; 
+			} else {
+				p1.worldY -= overlapy;
+			}
+		} else { // colisão pelos lados esquerda ou direita
+			if(catx > 0){ // colidiu na esquerda
+				p1.worldX += overlapx;
+			}else{
+				p1.worldX -= overlapx;
+			}
+		}
+	}
+}
+function colide(p1, p2){
+	// p1 --> personagem
+	// p2 --> parede bloqueante elemento de interação..
+	//catetos distancia entre os pontos
+	let catx = p1.meiox() - p2.meiox();
+	let caty = p1.meioy() - p2.meioy();
+	//soma das metades
+	let somax = p1.metax() + p2.metax();
+	let somay = p1.metay() + p2.metay();
+	// tocando-se!!!!!!!!!!
+	if (Math.abs(catx) < somax && Math.abs(caty) < somay) {
+		//p2.ver = false;
+		return true;
+	}else{
+		return false;
+	}
+}
+  </script>  
+    <!--  src="javascripts/script.js" -->
+  <script>
+    var cnv = document.querySelector('canvas');
+var ctx = cnv.getContext('2d');
+//GLOBAIS VARIAVEIS.
+var sprites = new Array();
+
+var GLOBAIS = {
+    vida: 3,
+    pontos: 0,
+	fase: 0,
+	teia: null,
+	teiaY: 0,
+	teiaX: 0,
+	lancaTeia: false,
+	teiaCarga: 50,
+	teiaXfim: null,
+	teiaYfim: null,
+	dist: 0, //distancia do balançar
+	ajustar: false,
+	paredeLar:30,//espacoVazio dos blocos que compoem as paredes do predio
+	paredeAlt: 35,//altura dos blocos que compoem as paredes do predio
+	predioBlocos: 10, //aceita somente numeros pares de blocos...
+	predioDiferencaespacoVazio: 2,
+	predioDivide: 7,//a cada x andares diminui o predio
+	caindo: false,
+	GLOBAIS: 0,
+	pause: false,
+	ranking: [1,2,3,4,5],
+	nomes: ['um','dois','tres','quatro','cinco']
+}
+const janela = [1, 130, 66, 98, 259];//srcX
+const jnl = 2;//maximo 5 janelas diferentes... repensar
+
+var andares;
+var BUFFER = {//BUFFER para reduzir for's no codigo...
+	indexTeia: encontrar('teia'),
+	indexPlayer: encontrar('player')
+}
+
+startFase();
+loop();
+//************************************************************************************************ */
+function loop(){	
+	BUFFER = {//BUFFER para reduzir for's no codigo...
+		indexTeia: encontrar('teia'),
+		indexPlayer: encontrar('player'),
+		vida: GLOBAIS.vida
+	}
+    // limpar tela
+	ctx.clearRect(0,0,cnv.width,cnv.height);
+	
+	for (let i = 0 ; i < sprites.length; i++) {//percorre array de sprites for principal...
+		if (!GLOBAIS.pause) {/////////////
+			sprites[i].exe();/////////////////  movimento do jogo...            
+			(sprites[i].flag == 'player') ? teia() : null;//chama função que desenha teia antes desenhar aranha
+		}////////////////////////////////////
+		sprites[i].render();/////////////// renderiza na tela...
+		//
+		if (sprites[i].flag == 'fimDaFase' && colide(sprites[i], sprites[BUFFER.indexPlayer])) {
+			//alert('fimDaFase');			
+			GLOBAIS.teiaX = 0;
+			GLOBAIS.teiaY = 0;
+			GLOBAIS.pause = true;			
+			if (GLOBAIS.teiaCarga && GLOBAIS.teiaCarga > 0) {
+				GLOBAIS.pontos++;
+				GLOBAIS.teiaCarga--;
+			} else {
+				sprites[i].flag = 'novaFase';
+				GLOBAIS.fase++;
+				GLOBAIS.vida++;
+				setTimeout(() => {
+					startFase();
+				}, 1000);
+			}
+		}
+		//remendo porco...
+		if (sprites[i].flag == 'placar') {
+			sprites[i].posX = 0;
+			if(sprites[i].lar > 20){
+				//quadro negro
+			}else{
+				//teia
+			}
+		}
+	}	
+	//placar
+    ctx.font = "15px Arial";//  TEXTO...
+	ctx.fillStyle = 'red';
+    ctx.fillText(GLOBAIS.pontos, 13,  cnv.height - 18);
+	ctx.font = "10px Arial";//  TEXTO...
+	ctx.fillStyle = 'white';
+	ctx.fillText(GLOBAIS.teiaCarga+' m', 17,  cnv.height - 5);
+
+	for (let i = 0 ; i < sprites.length; i++){//exclui do array
+		if (sprites[i].flag == 'excluir' || sprites[i].flag == 'delete') {
+			sprites.splice(i, 1);
+		}
+	}
+	(BUFFER.vida > GLOBAIS.vida) ? startFase() : null;
+	(!GLOBAIS.vida) ? endGame() : null;
+	organizarSprites();
+	requestAnimationFrame(loop, "canvas");
+}
+/*****************************************************************************************************/
+function abaixoDaTela() {
+	let resp = false;
+	sprites.forEach(spr => {
+		(spr.posY > cnv.height - spr.alt && spr.flag != 'player' && spr.flag != 'teia') ? resp = true : null;
+	});
+	return resp;
+}
+function teia() {
+	//lança teia...
+	if (GLOBAIS.teia && GLOBAIS.lancaTeia && GLOBAIS.teiaCarga) { //console.log('lançar teia');
+		GLOBAIS.ajustar = false;
+		//teia sobe
+		let limteia = -95;
+		(GLOBAIS.teiaY > limteia) ? GLOBAIS.teiaY-=2 : null;
+		(GLOBAIS.teiaY > limteia) ? GLOBAIS.teiaCarga-=1 : null;
+		switch (GLOBAIS.teia) {					
+			case 'right':
+					//direita -->
+					(GLOBAIS.teiaY > limteia) ? GLOBAIS.teiaX+= 1.5 : null;
+					sprites[BUFFER.indexPlayer].srcX = 356;
+					sprites[BUFFER.indexPlayer].srcY = 163;
+					sprites[BUFFER.indexPlayer].lar = 24;
+					sprites[BUFFER.indexPlayer].alt = 27;
+				break;
+
+			case 'left':
+					//esquerda <--
+					(GLOBAIS.teiaY > limteia) ? GLOBAIS.teiaX-= 1.5 : null;
+					sprites[BUFFER.indexPlayer].srcX = 380;
+					sprites[BUFFER.indexPlayer].srcY = 163;
+					sprites[BUFFER.indexPlayer].lar = 24;
+					sprites[BUFFER.indexPlayer].alt = 27;
+				break;
+		
+			default:
+				console.log('GLOBAIS.teia --> '+GLOBAIS.teia);
+				break;
+		}
+	}
+	// Define a new Path: desenha teia...
+	ctx.beginPath();
+	// ponta da teia
+	if(sprites[BUFFER.indexTeia].lar < 10){//movimenta ponta da teia...
+		GLOBAIS.teiaXfim = sprites[BUFFER.indexPlayer].meiox() + GLOBAIS.teiaX;
+		GLOBAIS.teiaYfim = sprites[BUFFER.indexPlayer].meioy() + GLOBAIS.teiaY;
+	}
+	sprites[BUFFER.indexTeia].posX = GLOBAIS.teiaXfim - sprites[BUFFER.indexTeia].metax();
+	sprites[BUFFER.indexTeia].posY = GLOBAIS.teiaYfim - sprites[BUFFER.indexTeia].metay();	//
+	ctx.moveTo(GLOBAIS.teiaXfim, GLOBAIS.teiaYfim);
+	// Define an end Point ponta da teia que toca no player
+	ctx.lineTo(sprites[BUFFER.indexPlayer].meiox(), sprites[BUFFER.indexPlayer].meioy()-sprites[BUFFER.indexPlayer].metay() / 2);
+	// Stroke it (Do the Drawing)
+	ctx.strokeStyle = "white";//cor da teia
+	ctx.stroke();
+	//pendurado na teia???
+	if (sprites[BUFFER.indexTeia].lar == 15) {//ponta da teia aberta grudado a parede...
+		GLOBAIS.caindo = false;
+		sprites[BUFFER.indexPlayer].movDown = false;
+		//console.log('pendurado na teia');
+		//teia reta sem balanço
+		if(sprites[BUFFER.indexPlayer].meiox() == sprites[BUFFER.indexTeia].meiox()){
+			//console.log('sem balanço aranha--> '+ sprites[BUFFER.indexPlayer].meiox() );
+		}else{//tem balanço
+			//console.log('com balanço dist--> '+ GLOBAIS.dist );
+			if(GLOBAIS.dist > 0){//teia para direita
+				sprites[BUFFER.indexPlayer].movLeft = false;
+				(sprites[BUFFER.indexPlayer].meiox() - sprites[BUFFER.indexTeia].meiox() >= GLOBAIS.dist ) ? GLOBAIS.dist *= -1 : sprites[BUFFER.indexPlayer].movRight = true;
+				//
+				if(sprites[BUFFER.indexPlayer].meiox() - sprites[BUFFER.indexTeia].meiox() < 0) {
+					sprites[BUFFER.indexPlayer].posY += .5;
+				}
+				if(sprites[BUFFER.indexPlayer].meiox() - sprites[BUFFER.indexTeia].meiox() > 0) {
+					sprites[BUFFER.indexPlayer].posY -= .5;
+				}
+				if (sprites[BUFFER.indexTeia].meiox() - sprites[BUFFER.indexPlayer].meiox() > 0) {
+					sprites[BUFFER.indexPlayer].srcX = 145;
+					sprites[BUFFER.indexPlayer].srcY = 114;
+					sprites[BUFFER.indexPlayer].lar = 24;
+					sprites[BUFFER.indexPlayer].alt = 27;
+				}else{
+					sprites[BUFFER.indexPlayer].srcX = 178;
+					sprites[BUFFER.indexPlayer].srcY = 117;
+					sprites[BUFFER.indexPlayer].lar = 29;
+					sprites[BUFFER.indexPlayer].alt = 25;
+				}
+				
+			}else{
+				//teia para esquerda
+				sprites[BUFFER.indexPlayer].movRight = false;
+				(sprites[BUFFER.indexPlayer].meiox() - sprites[BUFFER.indexTeia].meiox() <= GLOBAIS.dist ) ? GLOBAIS.dist *= -1 : sprites[BUFFER.indexPlayer].movLeft = true;
+				if(sprites[BUFFER.indexPlayer].meiox() - sprites[BUFFER.indexTeia].meiox() > 0) {
+					
+					sprites[BUFFER.indexPlayer].posY += .5;
+				}
+				if(sprites[BUFFER.indexPlayer].meiox() - sprites[BUFFER.indexTeia].meiox() < 0) {
+					
+					sprites[BUFFER.indexPlayer].posY -= .5;
+				}
+				if (sprites[BUFFER.indexPlayer].meiox() - sprites[BUFFER.indexTeia].meiox() > 0) {
+					sprites[BUFFER.indexPlayer].srcX = 159;
+					sprites[BUFFER.indexPlayer].srcY = 139;
+					sprites[BUFFER.indexPlayer].lar = 24;
+					sprites[BUFFER.indexPlayer].alt = 27;
+				}else{
+					sprites[BUFFER.indexPlayer].srcX = 214;
+					sprites[BUFFER.indexPlayer].srcY = 117;
+					sprites[BUFFER.indexPlayer].lar = 29;
+					sprites[BUFFER.indexPlayer].alt = 25;
+				}
+				
+			}
+		}
+	}	
+}
+function pontaTeia() {//retorna oq esta tocando na ponta da teia no momento elemento mais a frente do array acima da pilha dos ultimos...
+	for (let i = sprites.length-1; i >=0 ; i--) {
+		const spr = sprites[i];
+		if (spr.flag != 'teia') {
+			if (colide(spr, sprites[BUFFER.indexTeia])) {
+				return spr.flag;
+			}
+		}
+	}
+	return false;
+}
+function predio(andar) {
+	let ajt = 1;
+	let ajuste = (10 - GLOBAIS.predioBlocos) / 2 * GLOBAIS.paredeLar;//centralizar predio na tela inicio game
+	for (let i = 0; i < andar; i++) {		
+		janela[Math.floor(Math.random() * jnl)];
+		//predio
+		if(i / GLOBAIS.predioDivide == ajt) {//diminui espacoVazio do predio...
+			(ajt < GLOBAIS.predioDivide) ? ajt++ : null;
+			GLOBAIS.paredeLar -= GLOBAIS.predioDiferencaespacoVazio ;
+			ajuste += GLOBAIS.predioDiferencaespacoVazio  * GLOBAIS.predioBlocos/2;
+		}
+		let srcXparede;
+		switch (GLOBAIS.fase) {//tipo de parede da fase
+			case 0:
+				srcXparede = 705;
+				break;
+			case 1:
+				srcXparede = 640;
+				break;
+			case 2:
+				srcXparede = 511;
+				break;
+			case 3:
+				srcXparede = 832;
+				break;
+			case 4:
+				srcXparede = 768;
+				break;
+			case 5:
+				srcXparede = 960;
+				break;
+		
+			default:
+				srcXparede = 896;
+				break;
+		}
+		for (let j = 0; j < GLOBAIS.predioBlocos; j++) {// parede srcX: 832 768 960 705 640 511
+			sprites.push(new Sprite('public/images/background.png', 'parede', srcXparede, 99, GLOBAIS.paredeLar, GLOBAIS.paredeAlt, GLOBAIS.paredeLar*j + ajuste, cnv.height-GLOBAIS.paredeAlt - GLOBAIS.paredeAlt*i));
+		}
+		for (let j = 0; j < GLOBAIS.predioBlocos/2; j++) {//janela
+			(i==0)?sprites.push(new Sprite('public/images/background.png', 'porta', 130, 909, 30, 35, GLOBAIS.paredeLar * GLOBAIS.predioBlocos /2 -GLOBAIS.paredeLar/2 + ajuste, cnv.height-GLOBAIS.paredeAlt - GLOBAIS.paredeAlt*i)) : sprites.push(new Sprite('public/images/background.png', 'janela', janela[Math.floor(Math.random() * jnl)], 909, 30, 23, GLOBAIS.paredeLar/2 + GLOBAIS.paredeLar*2*j + ajuste, cnv.height-GLOBAIS.paredeAlt - GLOBAIS.paredeAlt*i));			
+		}		
+	}
+}
+function construcao(menos = 0, niveis=1) {
+	let blocoCentralAlt = 18;
+	let barraFerroLarg = 10;
+	let altura = 0;
+	for (let k = 0; k < niveis; k++) {
+		if (k) {
+			GLOBAIS.paredeLar -= menos;
+		}
+		altura = cnv.height - GLOBAIS.paredeAlt*andares - GLOBAIS.paredeAlt*2 - blocoCentralAlt - (GLOBAIS.paredeAlt*3 - blocoCentralAlt + barraFerroLarg)*k;
+		let inicial = cnv.width / 2 - GLOBAIS.paredeLar * GLOBAIS.predioBlocos / 2;//
+		
+		let espacoVazio = (GLOBAIS.paredeLar * GLOBAIS.predioBlocos - barraFerroLarg*2) / 4;
+		let blocoCentralLar = 20;
+		
+		
+		sprites.push(new Sprite('public/images/background.png', 'ferro', 899, 160, barraFerroLarg, GLOBAIS.paredeAlt*2+blocoCentralAlt, inicial, altura));//barra de ferro esquerda
+		sprites.push(new Sprite('public/images/background.png', 'ferro', 899, 160, barraFerroLarg, GLOBAIS.paredeAlt*2 + blocoCentralAlt, inicial + GLOBAIS.paredeLar * GLOBAIS.predioBlocos - 10 , altura));//barra de ferro direita
+		//central
+		sprites.push(new Sprite('public/images/background.png', 'ferro', 899, 160, blocoCentralLar, blocoCentralAlt, inicial + espacoVazio, cnv.height - GLOBAIS.paredeAlt*andares - GLOBAIS.paredeAlt - blocoCentralAlt - (GLOBAIS.paredeAlt*3 - blocoCentralAlt + barraFerroLarg)*k));
+		(GLOBAIS.fase) ? sprites.push(new Sprite('public/images/Bomb - General Sprites.png', 'bomba', 45, 134, 14, 18, inicial + espacoVazio + blocoCentralLar/2 -7, cnv.height - GLOBAIS.paredeAlt*andares - GLOBAIS.paredeAlt - blocoCentralAlt - (GLOBAIS.paredeAlt*3 - blocoCentralAlt + barraFerroLarg)*k - 18)) : null;
+
+		sprites.push(new Sprite('public/images/background.png', 'ferro', 899, 160, blocoCentralLar, blocoCentralAlt, inicial + espacoVazio*3, cnv.height - GLOBAIS.paredeAlt*andares - GLOBAIS.paredeAlt - blocoCentralAlt - (GLOBAIS.paredeAlt*3 - blocoCentralAlt + barraFerroLarg)*k));
+		(GLOBAIS.fase) ? sprites.push(new Sprite('public/images/Bomb - General Sprites.png', 'bomba', 45, 134, 14, 18, inicial + espacoVazio*3 + blocoCentralLar/2 -7, cnv.height - GLOBAIS.paredeAlt*andares - GLOBAIS.paredeAlt - blocoCentralAlt - (GLOBAIS.paredeAlt*3 - blocoCentralAlt + barraFerroLarg)*k - 18)) : null;
+
+		let memo = inicial + espacoVazio*3 - (inicial + espacoVazio);
+		//diagonais
+		let diagonalLar = (espacoVazio - blocoCentralLar/2)/6;//calcular
+		let diagonalAlt = 6;
+		for (let i = 0; i < 6; i++) {		
+			
+			sprites.push(new Sprite('public/images/background.png', 'caboFerro', 899, 160, diagonalLar, diagonalAlt, inicial + barraFerroLarg + diagonalLar*i, altura + diagonalAlt*i));//-->baixo
+
+			sprites.push(new Sprite('public/images/background.png', 'caboFerro', 899, 160, diagonalLar, diagonalAlt, inicial + espacoVazio + blocoCentralLar/2 +  barraFerroLarg + diagonalLar*i, cnv.height - GLOBAIS.paredeAlt*andares - GLOBAIS.paredeAlt + diagonalAlt*i-1 - (GLOBAIS.paredeAlt*3 - blocoCentralAlt + barraFerroLarg)*k));//-->baixo
+
+			sprites.push(new Sprite('public/images/background.png', 'caboFerro', 899, 160, diagonalLar, diagonalAlt, inicial + barraFerroLarg + diagonalLar*i, cnv.height - GLOBAIS.paredeAlt*andares - diagonalAlt*i -diagonalAlt - (GLOBAIS.paredeAlt*3 - blocoCentralAlt + barraFerroLarg)*k));//-->cima
+
+			sprites.push(new Sprite('public/images/background.png', 'caboFerro', 899, 160, diagonalLar, diagonalAlt, inicial + espacoVazio + blocoCentralLar/2 +  barraFerroLarg + diagonalLar*i, cnv.height - GLOBAIS.paredeAlt*andares - diagonalAlt*i -diagonalAlt - GLOBAIS.paredeAlt - blocoCentralAlt - (GLOBAIS.paredeAlt*3 - blocoCentralAlt + barraFerroLarg)*k+1));//-->cima
+			/*************************/
+			sprites.push(new Sprite('public/images/background.png', 'caboFerro', 899, 160, diagonalLar, diagonalAlt, inicial + memo + barraFerroLarg + diagonalLar*i, altura + diagonalAlt*i));//-->baixo
+
+			sprites.push(new Sprite('public/images/background.png', 'caboFerro', 899, 160, diagonalLar, diagonalAlt, inicial + memo + espacoVazio + blocoCentralLar/2 +  barraFerroLarg + diagonalLar*i, cnv.height - GLOBAIS.paredeAlt*andares - GLOBAIS.paredeAlt + diagonalAlt*i - (GLOBAIS.paredeAlt*3 - blocoCentralAlt + barraFerroLarg)*k));//-->baixo
+
+			sprites.push(new Sprite('public/images/background.png', 'caboFerro', 899, 160, diagonalLar, diagonalAlt, inicial + memo + barraFerroLarg + diagonalLar*i, cnv.height - GLOBAIS.paredeAlt*andares - diagonalAlt*i -diagonalAlt - (GLOBAIS.paredeAlt*3 - blocoCentralAlt + barraFerroLarg)*k));//-->cima
+			//inicial + espacoVazio + blocoCentralLar/2 +  barraFerroLarg + diagonalLar*i
+			sprites.push(new Sprite('public/images/background.png', 'caboFerro', 899, 160, diagonalLar, diagonalAlt, inicial + memo + espacoVazio + blocoCentralLar/2 +  barraFerroLarg + diagonalLar*i, cnv.height - GLOBAIS.paredeAlt*andares - diagonalAlt*i -diagonalAlt - GLOBAIS.paredeAlt - blocoCentralAlt - (GLOBAIS.paredeAlt*3 - blocoCentralAlt + barraFerroLarg)*k+1));//-->cima
+
+		}
+		for (let i = 0; i < 4; i++) {
+			(i && k) ? recuo = barraFerroLarg/2*i*k : recuo=0;
+			sprites.push(new Sprite('public/images/background.png', 'ferro', 899, 160, GLOBAIS.paredeLar*GLOBAIS.predioBlocos/4, barraFerroLarg, inicial + GLOBAIS.paredeLar*GLOBAIS.predioBlocos/4*i, altura - barraFerroLarg));
+		}		
+	}
+	//final da fase player vence...
+	let finalAlt = 30;
+	let finalLar = 31;
+	sprites.push(new Sprite('public/images/background.png', 'ferro', 224, 0, finalLar, finalAlt, cnv.width/2 -finalLar, altura - barraFerroLarg - finalAlt));
+	sprites.push(new Sprite('public/images/background.png', 'ferro', 224, 0, finalLar, finalAlt, cnv.width/2 -finalLar, altura - barraFerroLarg - finalAlt*2));
+	//
+	sprites.push(new Sprite('public/images/background.png', 'ferro', 224, 0, finalLar, finalAlt, cnv.width/2, altura - barraFerroLarg - finalAlt));
+	sprites.push(new Sprite('public/images/background.png', 'ferro', 224, 0, finalLar, finalAlt, cnv.width/2, altura - barraFerroLarg - finalAlt*2));
+
+	sprites.push(new Sprite('public/images/background.png', 'fimDaFase', 320, 0, finalLar/2, finalAlt/2, cnv.width/2-finalLar/4, altura - barraFerroLarg - finalAlt - finalAlt/4));
+	GLOBAIS.teiaCarga = altura*-2 + cnv.height;//???
+}
+function viloes() {
+	//limpar vilões do array
+	for (let i = 0; i < sprites.length; i++) {
+		let spr = sprites[i];
+		(spr.flag == 'vilao' || spr.flag == 'golpe') ? spr.flag = 'excluir' : null;
+	}
+	//rastrear janelas
+	let totalJanelas = contar('janela');
+	let sortJanela = [];
+	let iSort = Math.floor(Math.random() * totalJanelas);
+	for (let i = 0; i < totalJanelas*GLOBAIS.proporcao; i++) {
+		iSort = Math.floor(Math.random() * totalJanelas);//como garantir que ñ sorteie uma janela já ocupada
+		while(sortJanela.indexOf(iSort) >= 0){
+			iSort = Math.floor(Math.random() * totalJanelas);
+		}
+		sortJanela.push(iSort);
+		sprites[encontrar('janela', iSort)].srcX = 130;//130 janela aberta
+
+		if (Math.floor(Math.random() * 2)) {
+			sprites.push(new Sprite('public/images/amazona.png', 'vilao', 5, 8, 55, 25, sprites[encontrar('janela', iSort)].posX+5, sprites[encontrar('janela', iSort)].posY+5));//-->
+		}else{
+			sprites.push(new Sprite('public/images/amazona.png', 'vilao', 209, 8, 55, 25, sprites[encontrar('janela', iSort)].posX-14, sprites[encontrar('janela', iSort)].posY+5));//<--
+		}
+	}
+	let sup = Math.floor(Math.random() * 5);
+	if (!sup && GLOBAIS.fase) {
+		(Math.floor(Math.random() * 2)) ? superViloes('abutre') : superViloes('eletro');
+	}
+	setTimeout(function(){ viloes(); }, 6000);//ta chamando de novo ao chamar startFase()???
+}
+function superViloes(vilao) {
+	switch (vilao) {
+		case 'abutre':
+			sprites.push(new Sprite('public/images/bosses.png', 'superVilao', 0, 386, 30, 60, -50, 0));
+			sprites[encontrar('superVilao')].escala = .95;
+			sprites[encontrar('superVilao')].movRight = true;
+			sprites[encontrar('superVilao')].frequencia = 10;
+			console.log('insert abutre...');
+			break;
+		case 'eletro':
+			sprites.push(new Sprite('public/images/bosses.png', 'superVilao', 0, 40, 24, 40, -50, 0));
+			//sprites[encontrar('superVilao')].escala = .95;
+			sprites[encontrar('superVilao')].movRight = true;
+			sprites[encontrar('superVilao')].frequencia = 26;
+			console.log('insert eletro...');
+			break;
+	
+		default://duende verde
+			let posY = GLOBAIS.paredeAlt * andares/2 - cnv.height;
+			sprites.push(new Sprite('public/images/bosses.png', 'superVilao', 0, 522, 24, 44, 0, posY*-1));
+			sprites[encontrar('superVilao')].escala = .9;
+			sprites[encontrar('superVilao')].movRight = true;
+			console.log('insert duende...');
+			break;
+	}	
+}
+function vida() {
+	for (let i = 0; i < GLOBAIS.vida; i++) {
+		//const element = array[i];
+		sprites.push(new Sprite('public/images/Spider-Man.gif', 'vida', 318, 4220, 20, 18, 65 +i*15, cnv.height - 18));
+	sprites[encontrar('vida')].escala = .7;
+	}
+	
+}
+function startFase() {
+	GLOBAIS.pause = false;
+	andares = 7 +GLOBAIS.fase * 5;
+	sprites = [];
+	GLOBAIS.paredeLar=30;
+	predio(andares);
+	construcao(2,1 + GLOBAIS.fase);//(folga a diminuir, niveis ou andares)
+	//ponta da teia
+	sprites.push(new Sprite('public/images/teia3.png', 'teia', 3, 3, 9, 9, 0, 0));//0, 0, 15, 15,
+	//player
+	sprites.push(new Sprite('public/images/Spider-Man.png', 'player', 136, 208, 23, 36, cnv.width/2-40.5, cnv.height-35));
+	(GLOBAIS.fase) ? GLOBAIS.proporcao = GLOBAIS.fase/10 : GLOBAIS.proporcao = 0.1;
+	(!GLOBAIS.fase) ? viloes() : null;//(porcentagem % de viloes nas janelas do predio) //chama somente uma vez quando GLOBAIS.fase = 0; 
+	sprites.push(new Sprite('public/images/background.png', 'placar', 575, 1740, 65, 35, 0, cnv.height - 35));//quadro
+	sprites.push(new Sprite('public/images/teia3.png', 'placar', 0, 0, 15, 15, 0, cnv.height - 15));//teia
+	vida();
+	(GLOBAIS.fase) ? superViloes() : null;//superViloes default: duende verde...
+}
+function endGame(){
+	if (!GLOBAIS.pause) {
+		sprites.push(new Sprite('public/images/spider-man-atari-2600', 'score', 0, 45, 749, 515, 0, 0));
+		sprites[encontrar('score')].escala = .4;
+		//ranking... preencher array aqui???
+		for (let i = 0; i < 5; i++) {
+			if (getCookie('aranha'+i)) {
+				GLOBAIS.ranking[i] = getCookie('aranha'+i);
+				GLOBAIS.nomes[i] = getCookie('homem'+i);
+			}
+		}
+		//organizar array do score...
+		let troca = false;
+		GLOBAIS.ranking.push(GLOBAIS.pontos);
+		GLOBAIS.nomes.push(prompt('digite seu nome...').toLocaleUpperCase());
+		
+		do {
+			troca = false;
+			for (let i = 0; i < GLOBAIS.ranking.length-1; i++) {
+				if (GLOBAIS.ranking[i] < GLOBAIS.ranking[i+1]) {
+					let memo = GLOBAIS.ranking[i+1];
+					GLOBAIS.ranking[i+1] = GLOBAIS.ranking[i];
+					GLOBAIS.ranking[i] = memo;
+					//
+					memo = GLOBAIS.nomes[i];
+					GLOBAIS.nomes[i] = GLOBAIS.nomes[i+1];
+					GLOBAIS.nomes[i+1] = memo;
+					troca = true;
+				}
+			}
+		} while (troca);
+		//preencher cookies aqui???
+		for (let i = 0; i < 5; i++) {
+			setCookie('aranha'+i, GLOBAIS.ranking[i], 3650);
+			setCookie('homem'+i, GLOBAIS.nomes[i], 3650)
+		}
+	}
+	GLOBAIS.pause = true;
+	GLOBAIS.proporcao = 0//parar sorteio de viloes...
+
+	sprites[encontrar('player')].srcX = 247;
+	sprites[encontrar('player')].srcY = 255;
+	sprites[encontrar('player')].lar = 40;
+
+    ctx.font = "25px Arial";//  TEXTO...
+	ctx.fillStyle = 'red';
+    ctx.fillText('SEU SCORE... '+ GLOBAIS.pontos, 4,  cnv.height/5);
+	
+	ctx.font = "12px Arial";
+	ctx.fillStyle = '#000';
+	for (let i = 0; i < GLOBAIS.ranking.length-1; i++) {
+		//const element = GLOBAIS.ranking[i];
+		ctx.fillText(i+1+'St  '+ GLOBAIS.ranking[i] +'  '+ GLOBAIS.nomes[i], 4,  cnv.height/5 + 15 +18*i);
+	}
+    
+}
+
+function encontrar(flag, n){//descobre index do objeto que corresponda a flag com maior index do array
+	let num = n;
+	for (let i = sprites.length - 1; i >= 0; i--) {
+		if (sprites[i].flag == flag) {
+			if(!num){
+				return i;
+			}
+			num--;
+		}
+	}
+    return false;
+}
+function contar(obj){//descobre quantos objetos com a mesma flag tem em jogo
+    let countObj = 0;
+	for (let i = sprites.length - 1; i >= 0; i--) {
+		if (sprites[i].flag == obj) {
+			countObj++
+		}
+	}
+    return countObj;
+}
+function organizarSprites () {
+	//organizar array / pilha de sprites...
+	let troca;
+	do{//txt
+		troca = false;			
+		for (let i = sprites.length - 2; i >= 0; i--){
+			//teste logico para piso / chão.......
+			if (sprites[i].flag !== 'parede' && sprites[i+1].flag == 'parede') {
+				troca = sprites[i];
+				sprites[i] = sprites[i+1];
+				sprites[i+1] = troca;
+				troca = true;										
+			}
+			if (sprites[i].flag !== 'parede' && sprites[i].flag !== 'janela' && sprites[i+1].flag == 'janela') {
+				troca = sprites[i];
+				sprites[i] = sprites[i+1];
+				sprites[i+1] = troca;
+				troca = true;										
+			}
+			if (sprites[i].flag !== 'parede' && sprites[i].flag !== 'janela' && sprites[i].flag !== 'ferro' && sprites[i+1].flag == 'ferro') {
+				troca = sprites[i];
+				sprites[i] = sprites[i+1];
+				sprites[i+1] = troca;
+				troca = true;										
+			}
+			if (sprites[i].flag !== 'parede' && sprites[i].flag !== 'janela' && sprites[i].flag !== 'ferro' && sprites[i].flag !== 'caboFerro' && sprites[i+1].flag == 'caboFerro') {
+				troca = sprites[i];
+				sprites[i] = sprites[i+1];
+				sprites[i+1] = troca;
+				troca = true;										
+			}
+			if (sprites[i].flag !== 'parede' && sprites[i].flag !== 'janela' && sprites[i].flag !== 'ferro' && sprites[i].flag !== 'caboFerro' && sprites[i].flag !== 'vilao' && sprites[i+1].flag == 'vilao') {
+				troca = sprites[i];
+				sprites[i] = sprites[i+1];
+				sprites[i+1] = troca;
+				troca = true;
+			}
+
+			if (sprites[i].flag == 'player' && i < sprites.length-1) {
+				troca = sprites[i];
+				sprites[i] = sprites[sprites.length-1];
+				sprites[sprites.length-1] = troca;
+				troca = true;
+			}
+			if (sprites[i].flag == 'placar' && sprites[i].lar == 15 && i < sprites.length-2) {
+				troca = sprites[i];
+				sprites[i] = sprites[sprites.length-2];
+				sprites[sprites.length-2] = troca;
+				sprites[sprites.length-2].posY = cnv.height - sprites[sprites.length-2].alt;
+				troca = true;
+			}
+			if (sprites[i].flag == 'placar' && sprites[i].lar > 15 && i < sprites.length-3) {
+				troca = sprites[i];
+				sprites[i] = sprites[sprites.length-3];
+				sprites[sprites.length-3] = troca;
+				sprites[sprites.length-3].posX = 0;
+				sprites[sprites.length-3].posY = cnv.height - sprites[sprites.length-3].alt;
+				troca = true;
+			}
+			
+			/*/
+				if (sprites[i]. == '' && sprites[i+1]. !== '' ) {
+					troca = sprites[i];
+					sprites[i] = sprites[i+1];
+					sprites[i+1] = troca;
+					troca = true;					
+				}
+			/*/
+		}
+	}while(troca);	
+}
+
+function startGame(fase) {
+	GLOBAIS.fase = fase;
+	startFase();
+}
+//
+function setCookie(cname, cvalue, exdays) {
+	const d = new Date();
+	d.setTime(d.getTime() + (exdays*24*60*60*1000));
+	let expires = "expires="+ d.toUTCString();
+	document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+}
+function getCookie(cname) {
+	let name = cname + "=";
+	let decodedCookie = decodeURIComponent(document.cookie);
+	let ca = decodedCookie.split(';');
+	for(let i = 0; i <ca.length; i++) {
+	  let c = ca[i];
+	  while (c.charAt(0) == ' ') {
+		c = c.substring(1);
+	  }
+	  if (c.indexOf(name) == 0) {
+		return c.substring(name.length, c.length);
+	  }
+	}
+	return false;
+}
+function deleteCokie(cname){
+	document.cookie = cname+"=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+}
+function zerarPlacar() {
+	for (let i = 0; i < 5; i++) {
+		deleteCokie('aranha'+i);
+		deleteCokie('homem'+i);
+	}	
+}
+  </script>
+    <!--  src="javascripts/teclado.js" -->
+  <script>
+    //VARIAVEIS GLOBAIS...
+var LEFT = 37, UP = 38, RIGHT = 39, DOWN = 40;
+var porcentMouseX = porcentMouseY = null;
+
+window.addEventListener("keydown", keydownHandler, false);
+window.addEventListener("keyup", keyupHandler, false);
+//
+function keydownHandler(e){	
+	switch(e.keyCode){
+		case RIGHT:
+			//sprites[encontrar('player')].movRight = true;
+			//sprites[encontrar('player')].movLeft = false;
+			//sprites[encontrar('player')].movUp = false;
+			//sprites[encontrar('player')].movDown = false;
+			GLOBAIS.teia = 'right';
+		break;
+		case LEFT:
+			//sprites[encontrar('player')].movRight = false;
+			//sprites[encontrar('player')].movLeft = true;
+			//sprites[encontrar('player')].movUp = false;
+			//sprites[encontrar('player')].movDown = false;
+			GLOBAIS.teia = 'left';
+		break;
+		case UP:
+			//sprites[1].movRight = false;
+			//sprites[1].movLeft = false;
+			//sprites[encontrar('player')].movUp = true;
+			//sprites[encontrar('player')].movDown = false;
+			(sprites[encontrar('teia')].lar < 10) ? GLOBAIS.teia = 'up' : sprites[encontrar('player')].movUp = true;
+			(sprites[encontrar('player')].meioy() < sprites[encontrar('teia')].meioy()) ? sprites[encontrar('player')].movUp = false : null;
+		break;
+		case DOWN:
+			//sprites[1].movRight = false;
+			//sprites[1].movLeft = false;
+			sprites[encontrar('player')].movUp = false;
+			sprites[encontrar('player')].movDown = true;
+		break;
+		case 32: //barra de espaço
+			(GLOBAIS.teia) ? GLOBAIS.lancaTeia = true : null;
+			/*sprites[encontrar('teia')].srcX = 5;
+			sprites[encontrar('teia')].srcY = 5;
+			sprites[encontrar('teia')].lar = 5;
+			sprites[encontrar('teia')].alt = 5;*/
+		break;
+	}
+}
+function keyupHandler(e){//solta tecla
+	//console.log(e.keyCode);
+	switch(e.keyCode){
+		case RIGHT:
+			sprites[encontrar('player')].movRight = false;
+		break;
+		case LEFT:
+			sprites[encontrar('player')].movLeft = false;
+		break;
+		case UP:
+			sprites[encontrar('player')].movUp = false;
+			let distancia = sprites[encontrar('player')].posY - sprites[encontrar('teia')].posY;
+			(GLOBAIS.dist > 0) ? GLOBAIS.dist = distancia : distancia *-1;
+		break;
+		case DOWN:
+			sprites[encontrar('player')].movDown = false;
+		break;
+		case 32: //solta barra de espaço
+			GLOBAIS.lancaTeia = false;
+			GLOBAIS.teia = null;
+			let pTeia = pontaTeia();
+			if ((pTeia == 'parede' || pTeia == 'ferro' || pTeia == 'caboFerro' || pTeia == 'placar') && sprites[encontrar('teia')].lar < 10) {
+				sprites[encontrar('teia')].srcX = 0;
+				sprites[encontrar('teia')].srcY = 0;
+				sprites[encontrar('teia')].lar = 15;
+				sprites[encontrar('teia')].alt = 15;
+				GLOBAIS.dist = sprites[encontrar('teia')].meiox() - sprites[encontrar('player')].meiox();
+				GLOBAIS.caindo = false;
+			}else{
+				if (sprites[encontrar('teia')].lar < 10) {
+					console.log('homem aranha cai...');
+					GLOBAIS.caindo = true;
+					GLOBAIS.teiaY = 0;
+					GLOBAIS.teiaX = 0;
+				}				
+			}
+			
+		break;
+		case 33://pag up
+			
+		break;
+		case 34://pag down
+						
+		break;
+		case 48: // 0 numero...
+			window.open("/help");
+		break;
+		case 49: // 1 numero...			
+			
+		break;
+		case 50: // 2 numero...			
+			
+		break;
+		case 51: // 3 numero...
+			
+		break;
+		case 52: // 4 numero...
+			
+		break;
+		case 53: // 5 numero...
+			
+		break;
+		case 54: // 6 numero...
+			
+		break;
+		case 55: // 7 numero...
+			
+		break;
+		case 56: // 8 numero...
+			
+		break;
+		case 57: // 9 numero...
+			console.log('numero 9 <==> teclado...' );
+		break;
+		case 72: // h letra...
+			console.log('letra h <==> teclado...' );
+			window.open("/help");
+		break;
+		case 77: // m letra...
+			console.log('letra m <==> teclado...');				
+		break;
+		case 80: // p letra...
+			console.log('letra p <==> teclado...');
+			(GLOBAIS.pause) ? GLOBAIS.pause = false : GLOBAIS.pause = true;
+		break;
+	}
+}
+
+cnv.addEventListener('click', event =>   //mouse
+{
+    let rect = cnv.getBoundingClientRect();
+    //rect é a tela do canvas
+    let x = event.clientX;// - rect.left;// - cnv.clientLeft;
+    let y = event.clientY;// - rect.top;// - cnv.clientTop;
+
+    //console.log(x +' , '+ y +' tamanho da tela? ' + rect.width +' , '+ rect.height);
+     //porcentMouseX = x / rect.width;
+     //porcentMouseY = y / rect.height;          
+
+});
+  </script>
+</html>
